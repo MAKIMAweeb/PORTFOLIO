@@ -657,6 +657,277 @@
     to { transform: translateX(-50%); }
   }
 
+  /* GALLERY */
+  #gallery { border-top: 1px solid var(--border); }
+
+  .gallery-block { margin-bottom: 6rem; }
+  .gallery-block:last-child { margin-bottom: 0; }
+
+  .gallery-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+
+  .gallery-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1.75rem;
+  }
+
+  /* Storyboard — featured + thumbs */
+  .sb-featured {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+  .sb-featured img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .sb-thumbs {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 0.75rem;
+  }
+  .sb-thumb {
+    aspect-ratio: 16 / 9;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .sb-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .sb-thumb:hover, .sb-thumb.active { border-color: var(--accent); transform: translateY(-2px); }
+
+  /* Storyboard — sequence viewer */
+  .seq-viewer {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+  .seq-viewer img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+    display: block;
+    background: #000;
+  }
+
+  .seq-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 0.75rem 1rem;
+    border-radius: 2px;
+  }
+  .seq-btn {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 0.5rem 1.25rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+  }
+  .seq-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+  .seq-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .seq-counter {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  /* Video frames */
+  .video-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .video-frame video,
+  .video-frame iframe { width: 100%; height: 100%; display: block; border: 0; }
+
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+  }
+
+  .video-card .gallery-title { font-size: 1.15rem; margin-top: 1rem; margin-bottom: 0.25rem; }
+  .video-card .gallery-sub { margin-bottom: 0; font-size: 0.7rem; }
+
+  /* Render / design grid */
+  .render-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .render-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .render-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+  .render-media {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background: var(--surface2);
+    overflow: hidden;
+  }
+  .render-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .render-info { padding: 1rem 1.25rem; }
+  .render-info .gallery-title { font-size: 1rem; margin-bottom: 0.25rem; }
+  .render-info .gallery-sub { margin-bottom: 0; font-size: 0.7rem; }
+
+  /* CV nav link highlight */
+  .nav-cv { color: var(--accent) !important; }
+
+  /* CONTACT (elaborated) */
+  .contact {
+    padding: 10rem 4rem;
+    border-top: 1px solid var(--border);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+  .contact-info .section-label { justify-content: flex-start; }
+  .contact-info .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+  }
+  .contact-info p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    max-width: 420px;
+  }
+  .contact-info .contact-email { margin-bottom: 2.5rem; }
+
+  .socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+  .social-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    border: 1px solid var(--border);
+    padding: 0.55rem 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    border-radius: 100px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .social-link:hover { border-color: var(--accent); color: var(--accent); }
+  .social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px; height: 22px;
+    background: var(--surface2);
+    border-radius: 50%;
+    font-size: 0.65rem;
+    font-weight: 700;
+  }
+
+  .contact-form {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 2.5rem;
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+  .form-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .form-input {
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--border);
+    padding: 0.8rem 0;
+    font-family: 'Bricolage Grotesque', sans-serif;
+    font-size: 1rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-input:focus { border-color: var(--accent); }
+  textarea.form-input { min-height: 120px; resize: vertical; font-family: 'Bricolage Grotesque', sans-serif; }
+  .btn-send {
+    margin-top: 0.5rem;
+    background: var(--accent);
+    color: #0a0a0f;
+    padding: 1rem 2.5rem;
+    border: 0;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    align-self: flex-start;
+  }
+  .btn-send:hover { transform: translateY(-2px); box-shadow: 0 20px 60px rgba(200,255,0,0.3); }
+  .form-status {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--muted);
+    min-height: 1rem;
+  }
+  .form-status.ok { color: var(--accent); }
+  .form-status.err { color: var(--accent2); }
+
   @media (max-width: 768px) {
     nav { padding: 1.5rem 1.5rem; }
     nav ul { display: none; }
@@ -667,6 +938,9 @@
     .exp-item { grid-template-columns: 1fr; gap: 1rem; }
     .exp-item::before { display: none; }
     footer { flex-direction: column; gap: 1rem; text-align: center; }
+    .contact { padding: 5rem 1.5rem; }
+    .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .contact-form { padding: 1.5rem; }
   }
 </style>
 </head>
@@ -683,7 +957,9 @@
     <li><a href="#about">About</a></li>
     <li><a href="#skills">Skills</a></li>
     <li><a href="#experience">Work</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="cv.pdf" target="_blank" rel="noopener" class="nav-cv">CV ↗</a></li>
+    <li><a href="#contacto">Contact</a></li>
   </ul>
 </nav>
 
@@ -706,8 +982,8 @@
       21 year-old digital artist specializing in 3D &amp; 2D animation. Bringing worlds to life through Maya, Toon Boom &amp; Unreal Engine 5.
     </p>
     <div class="hero-actions">
-      <a href="#experience" class="btn-primary">View My Work</a>
-      <a href="#contact" class="btn-ghost">Get in touch</a>
+      <a href="#gallery" class="btn-primary">View My Work</a>
+      <a href="#contacto" class="btn-ghost">Get in touch</a>
     </div>
   </div>
 </section>
@@ -896,12 +1172,183 @@
   </div>
 </section>
 
-<!-- CONTACT -->
-<section id="contact">
-  <div class="section-label" style="justify-content:center;">04 — Contact</div>
-  <h2>Let's work<br><span style="color:var(--accent)">together.</span></h2>
-  <p>Open to freelance projects, collaborations, and studio opportunities. Let's create something unforgettable.</p>
-  <a href="mailto:santiago@email.com" class="contact-email">santiago@email.com</a>
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="section-label">04 — Gallery</div>
+  <h2>Selected work.</h2>
+
+  <!-- STORYBOARD -->
+  <div class="gallery-block reveal" id="storyboard">
+    <div class="gallery-title">Storyboard</div>
+    <div class="gallery-sub">// Featured + thumbnails</div>
+    <!-- EDITA: imagen principal del storyboard con thumbnails -->
+    <div class="sb-featured">
+      <img id="sb-featured-img" src="assets/storyboard/main.jpg" alt="Storyboard main" onerror="this.style.display='none'">
+    </div>
+    <div class="sb-thumbs" id="sb-thumbs">
+      <!-- EDITA: añade o reemplaza los thumbnails. data-full apunta a la versión grande -->
+      <div class="sb-thumb active" data-full="assets/storyboard/main.jpg"><img src="assets/storyboard/thumb-1.jpg" alt="Thumb 1" onerror="this.parentElement.style.background='var(--surface2)'"></div>
+      <div class="sb-thumb" data-full="assets/storyboard/shot-2.jpg"><img src="assets/storyboard/thumb-2.jpg" alt="Thumb 2" onerror="this.parentElement.style.background='var(--surface2)'"></div>
+      <div class="sb-thumb" data-full="assets/storyboard/shot-3.jpg"><img src="assets/storyboard/thumb-3.jpg" alt="Thumb 3" onerror="this.parentElement.style.background='var(--surface2)'"></div>
+      <div class="sb-thumb" data-full="assets/storyboard/shot-4.jpg"><img src="assets/storyboard/thumb-4.jpg" alt="Thumb 4" onerror="this.parentElement.style.background='var(--surface2)'"></div>
+    </div>
+
+    <div style="height:2.5rem"></div>
+
+    <div class="gallery-title">Storyboard — Sequence</div>
+    <div class="gallery-sub">// Frame by frame</div>
+    <!-- EDITA: rellena el array seqImages en el JS con las rutas de cada viñeta -->
+    <div class="seq-viewer">
+      <img id="seq-img" src="assets/storyboard/seq/01.jpg" alt="Sequence frame" onerror="this.style.opacity='0.2'">
+    </div>
+    <div class="seq-controls">
+      <button class="seq-btn" id="seq-prev" type="button">← Prev</button>
+      <span class="seq-counter" id="seq-counter">01 / 01</span>
+      <button class="seq-btn" id="seq-next" type="button">Next →</button>
+    </div>
+  </div>
+
+  <!-- REEL 2D / 3D -->
+  <div class="gallery-block reveal" id="reel">
+    <div class="gallery-title">Animation Reel — 2D &amp; 3D</div>
+    <div class="gallery-sub">// Showreel</div>
+    <div class="video-frame">
+      <!-- EDITA: sustituye el src por tu vídeo (archivo local en /assets o embed de YouTube/Vimeo) -->
+      <video src="assets/reel/reel.mp4" controls poster="assets/reel/poster.jpg"></video>
+      <!-- Alternativa embed:
+      <iframe src="https://www.youtube.com/embed/VIDEO_ID" title="Reel" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      -->
+    </div>
+  </div>
+
+  <!-- LAYOUT / PREVIS -->
+  <div class="gallery-block reveal" id="layout">
+    <div class="gallery-title">Layout &amp; Previs</div>
+    <div class="gallery-sub">// Multiple shots</div>
+    <div class="video-grid">
+      <!-- EDITA: duplica cada .video-card para añadir más vídeos -->
+      <div class="video-card">
+        <div class="video-frame">
+          <video src="assets/layout/layout-1.mp4" controls poster="assets/layout/poster-1.jpg"></video>
+        </div>
+        <div class="gallery-title">Shot 01</div>
+        <div class="gallery-sub">// Layout</div>
+      </div>
+      <div class="video-card">
+        <div class="video-frame">
+          <video src="assets/layout/layout-2.mp4" controls poster="assets/layout/poster-2.jpg"></video>
+        </div>
+        <div class="gallery-title">Shot 02</div>
+        <div class="gallery-sub">// Previs</div>
+      </div>
+      <div class="video-card">
+        <div class="video-frame">
+          <video src="assets/layout/layout-3.mp4" controls poster="assets/layout/poster-3.jpg"></video>
+        </div>
+        <div class="gallery-title">Shot 03</div>
+        <div class="gallery-sub">// Layout</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3D DESIGN -->
+  <div class="gallery-block reveal" id="design3d">
+    <div class="gallery-title">3D Design</div>
+    <div class="gallery-sub">// Renders &amp; props</div>
+    <div class="render-grid">
+      <!-- EDITA: añade más .render-card con tus renders -->
+      <div class="render-card">
+        <div class="render-media"><img src="assets/renders/weapon.jpg" alt="Weapon render" onerror="this.parentElement.style.background='var(--surface2)'"></div>
+        <div class="render-info">
+          <div class="gallery-title">Weapon</div>
+          <div class="gallery-sub">// Hard-surface · Maya</div>
+        </div>
+      </div>
+      <div class="render-card">
+        <div class="render-media"><img src="assets/renders/katana.jpg" alt="Katana render" onerror="this.parentElement.style.background='var(--surface2)'"></div>
+        <div class="render-info">
+          <div class="gallery-title">Katana</div>
+          <div class="gallery-sub">// Hard-surface · Maya</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHARACTER DESIGN -->
+  <div class="gallery-block reveal" id="characters">
+    <div class="gallery-title">Character Design</div>
+    <div class="gallery-sub">// Concepts &amp; turnarounds</div>
+    <div class="render-grid">
+      <!-- EDITA: añade tantos personajes como quieras -->
+      <div class="render-card">
+        <div class="render-media"><img src="assets/characters/char-1.jpg" alt="Character 1" onerror="this.parentElement.style.background='var(--surface2)'"></div>
+        <div class="render-info">
+          <div class="gallery-title">Character 01</div>
+          <div class="gallery-sub">// Concept</div>
+        </div>
+      </div>
+      <div class="render-card">
+        <div class="render-media"><img src="assets/characters/char-2.jpg" alt="Character 2" onerror="this.parentElement.style.background='var(--surface2)'"></div>
+        <div class="render-info">
+          <div class="gallery-title">Character 02</div>
+          <div class="gallery-sub">// Concept</div>
+        </div>
+      </div>
+      <div class="render-card">
+        <div class="render-media"><img src="assets/characters/char-3.jpg" alt="Character 3" onerror="this.parentElement.style.background='var(--surface2)'"></div>
+        <div class="render-info">
+          <div class="gallery-title">Character 03</div>
+          <div class="gallery-sub">// Concept</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CONTACTO ══════════ -->
+<section class="contact" id="contacto">
+  <div class="contact-grid">
+    <div class="contact-info reveal">
+      <p class="section-label">05 — Contacto</p>
+      <h2 class="section-title">Hablemos de<br>tu proyecto</h2>
+      <p>Disponible para encargos, colaboraciones y proyectos freelance. Cuéntame tu idea.</p>
+      <!-- EDITA tu email -->
+      <a href="mailto:tuemail@ejemplo.com" class="contact-email">tuemail@ejemplo.com</a>
+      <div class="socials">
+        <!-- EDITA los enlaces href con tus URLs reales -->
+        <a href="https://instagram.com/tuusuario" class="social-link" target="_blank" rel="noopener">
+          <span class="social-icon">IG</span> Instagram
+        </a>
+        <a href="https://linkedin.com/in/tuusuario" class="social-link" target="_blank" rel="noopener">
+          <span class="social-icon">Li</span> LinkedIn
+        </a>
+        <a href="https://behance.net/tuusuario" class="social-link" target="_blank" rel="noopener">
+          <span class="social-icon">Be</span> Behance
+        </a>
+        <a href="https://dribbble.com/tuusuario" class="social-link" target="_blank" rel="noopener">
+          <span class="social-icon">Dr</span> Dribbble
+        </a>
+      </div>
+    </div>
+    <form class="contact-form reveal" name="contacto" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="contacto">
+      <p style="display:none"><label>No rellenar: <input name="bot-field"></label></p>
+      <div class="form-group">
+        <label class="form-label" for="nombre">Nombre</label>
+        <input id="nombre" type="text" name="nombre" class="form-input" placeholder="Tu nombre" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="email">Email</label>
+        <input id="email" type="email" name="email" class="form-input" placeholder="tu@email.com" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="mensaje">Mensaje</label>
+        <textarea id="mensaje" name="mensaje" class="form-input" placeholder="Cuéntame sobre tu proyecto..." required></textarea>
+      </div>
+      <button type="submit" class="btn-send">Enviar mensaje</button>
+      <div class="form-status" id="form-status"></div>
+    </form>
+  </div>
 </section>
 
 <!-- FOOTER -->
@@ -1025,6 +1472,77 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.15 });
 
 reveals.forEach(el => observer.observe(el));
+
+// STORYBOARD — thumbnails → featured
+const sbFeatured = document.getElementById('sb-featured-img');
+document.querySelectorAll('#sb-thumbs .sb-thumb').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('#sb-thumbs .sb-thumb').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    const full = t.getAttribute('data-full');
+    if (full && sbFeatured) { sbFeatured.src = full; sbFeatured.style.display = 'block'; }
+  });
+});
+
+// STORYBOARD — sequence viewer (edit list below with your frame paths)
+const seqImages = [
+  'assets/storyboard/seq/01.jpg',
+  'assets/storyboard/seq/02.jpg',
+  'assets/storyboard/seq/03.jpg',
+  'assets/storyboard/seq/04.jpg',
+  'assets/storyboard/seq/05.jpg'
+];
+let seqIdx = 0;
+const seqImg = document.getElementById('seq-img');
+const seqCounter = document.getElementById('seq-counter');
+const seqPrev = document.getElementById('seq-prev');
+const seqNext = document.getElementById('seq-next');
+function renderSeq() {
+  if (!seqImg) return;
+  seqImg.src = seqImages[seqIdx];
+  const pad = n => String(n).padStart(2, '0');
+  seqCounter.textContent = `${pad(seqIdx + 1)} / ${pad(seqImages.length)}`;
+  seqPrev.disabled = seqIdx === 0;
+  seqNext.disabled = seqIdx === seqImages.length - 1;
+}
+seqPrev && seqPrev.addEventListener('click', () => { if (seqIdx > 0) { seqIdx--; renderSeq(); } });
+seqNext && seqNext.addEventListener('click', () => { if (seqIdx < seqImages.length - 1) { seqIdx++; renderSeq(); } });
+document.addEventListener('keydown', e => {
+  const viewer = document.getElementById('storyboard');
+  if (!viewer) return;
+  const r = viewer.getBoundingClientRect();
+  const inView = r.top < window.innerHeight && r.bottom > 0;
+  if (!inView) return;
+  if (e.key === 'ArrowLeft') seqPrev && seqPrev.click();
+  if (e.key === 'ArrowRight') seqNext && seqNext.click();
+});
+renderSeq();
+
+// CONTACT FORM — AJAX submit to Netlify Forms
+const contactForm = document.querySelector('form[name="contacto"]');
+const formStatus = document.getElementById('form-status');
+contactForm && contactForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  formStatus.className = 'form-status';
+  formStatus.textContent = 'Enviando...';
+  try {
+    const res = await fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(new FormData(contactForm)).toString()
+    });
+    if (res.ok) {
+      formStatus.classList.add('ok');
+      formStatus.textContent = '¡Gracias! Te respondo en breve.';
+      contactForm.reset();
+    } else {
+      throw new Error('status ' + res.status);
+    }
+  } catch (err) {
+    formStatus.classList.add('err');
+    formStatus.textContent = 'Ha habido un error. Escríbeme por email.';
+  }
+});
 </script>
 </body>
 </html>
