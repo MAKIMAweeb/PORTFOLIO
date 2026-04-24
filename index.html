@@ -1213,11 +1213,7 @@
     <div class="gallery-title">Animation Reel — 2D &amp; 3D</div>
     <div class="gallery-sub">// Showreel</div>
     <div class="video-frame">
-      <!-- EDITA: sustituye el src por tu vídeo (archivo local en /assets o embed de YouTube/Vimeo) -->
-      <video src="assets/reel/reel.mp4" controls poster="assets/reel/poster.jpg"></video>
-      <!-- Alternativa embed:
-      <iframe src="https://www.youtube.com/embed/VIDEO_ID" title="Reel" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      -->
+      <iframe src="https://www.youtube.com/embed/rmeQ-nYvJ-Y" title="Animation Reel 2D &amp; 3D — Santiago Jiménez" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
   </div>
 
@@ -1277,28 +1273,48 @@
   <!-- CHARACTER DESIGN -->
   <div class="gallery-block reveal" id="characters">
     <div class="gallery-title">Character Design</div>
-    <div class="gallery-sub">// Concepts &amp; turnarounds</div>
+    <div class="gallery-sub">// Sequence · v001 – v009</div>
+    <div class="seq-viewer">
+      <img id="char-seq-img" src="img/character designimgimg/DYAA_EMB3_santiagoJimenez_v001.jpg" alt="Character design frame" onerror="this.style.opacity='0.2'">
+    </div>
+    <div class="seq-controls">
+      <button class="seq-btn" id="char-seq-prev" type="button">← Prev</button>
+      <span class="seq-counter" id="char-seq-counter">01 / 09</span>
+      <button class="seq-btn" id="char-seq-next" type="button">Next →</button>
+    </div>
+  </div>
+
+  <!-- NATAXHEN – NIGHT WITCHES -->
+  <div class="gallery-block reveal" id="nataxhen">
+    <div class="gallery-title">Nataxhen — Night Witches</div>
+    <div class="gallery-sub">// Project</div>
     <div class="render-grid">
-      <!-- EDITA: añade tantos personajes como quieras -->
       <div class="render-card">
-        <div class="render-media"><img src="assets/characters/char-1.jpg" alt="Character 1" onerror="this.parentElement.style.background='var(--surface2)'"></div>
+        <div class="render-media"><img src="img/character designimgimg/LABI_BGdesign_santiagoJimenez_003.jpg" alt="BG-design hangar" onerror="this.parentElement.style.background='var(--surface2)'"></div>
         <div class="render-info">
-          <div class="gallery-title">Character 01</div>
-          <div class="gallery-sub">// Concept</div>
+          <div class="gallery-title">BG-design hangar</div>
+          <div class="gallery-sub">// Background Design</div>
         </div>
       </div>
       <div class="render-card">
-        <div class="render-media"><img src="assets/characters/char-2.jpg" alt="Character 2" onerror="this.parentElement.style.background='var(--surface2)'"></div>
+        <div class="render-media"><img src="img/character designimgimg/LABI_BGdesign_santiagoJimenez_004.jpg" alt="Plane-design Polikarpov II" onerror="this.parentElement.style.background='var(--surface2)'"></div>
         <div class="render-info">
-          <div class="gallery-title">Character 02</div>
-          <div class="gallery-sub">// Concept</div>
+          <div class="gallery-title">Plane-design Polikarpov II</div>
+          <div class="gallery-sub">// Prop Design</div>
         </div>
       </div>
       <div class="render-card">
-        <div class="render-media"><img src="assets/characters/char-3.jpg" alt="Character 3" onerror="this.parentElement.style.background='var(--surface2)'"></div>
+        <div class="render-media"><img src="img/character designimgimg/LABI_characterDesign_santiagoJimenez_001.jpg" alt="Character design 01 - Irina and Yevdokiya" onerror="this.parentElement.style.background='var(--surface2)'"></div>
         <div class="render-info">
-          <div class="gallery-title">Character 03</div>
-          <div class="gallery-sub">// Concept</div>
+          <div class="gallery-title">Character design 01</div>
+          <div class="gallery-sub">// Irina and Yevdokiya</div>
+        </div>
+      </div>
+      <div class="render-card">
+        <div class="render-media"><img src="img/character designimgimg/LABI_characterDesign_santiagoJimenez_002.jpg" alt="Character design 02 - Mayor Markova" onerror="this.parentElement.style.background='var(--surface2)'"></div>
+        <div class="render-info">
+          <div class="gallery-title">Character design 02</div>
+          <div class="gallery-sub">// Mayor Markova</div>
         </div>
       </div>
     </div>
@@ -1559,6 +1575,43 @@ document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight') seqNext && seqNext.click();
 });
 renderSeq();
+
+// CHARACTER DESIGN — sequence viewer v001–v009
+const charSeqImages = [
+  'img/character designimgimg/DYAA_EMB3_santiagoJimenez_v001.jpg',
+  'img/character designimgimg/DYAA_EMB3_santiagoJimenez_v002.jpg',
+  'img/character designimgimg/DYAA_EMB3_santiagoJimenez_v003.jpg',
+  'img/character designimgimg/DYAA_EMB3_santiagoJimenez_v004.jpg',
+  'img/character designimgimg/DYAA_EMB3_santiagoJimenez_v005.jpg',
+  'img/character designimgimg/DYAA_EMB3_santiagoJimenez_v006.jpg',
+  'img/character designimgimg/DYAA_EMB3_santiagoJimenez_v007.jpg',
+  'img/character designimgimg/DYAA_EMB3_santiagoJimenez_v008.jpg',
+  'img/character designimgimg/DYAA_EMB3_santiagoJimenez_v009.jpg',
+];
+let charSeqIdx = 0;
+const charSeqImg = document.getElementById('char-seq-img');
+const charSeqCounter = document.getElementById('char-seq-counter');
+const charSeqPrev = document.getElementById('char-seq-prev');
+const charSeqNext = document.getElementById('char-seq-next');
+function renderCharSeq() {
+  if (!charSeqImg) return;
+  charSeqImg.src = charSeqImages[charSeqIdx];
+  const pad = n => String(n).padStart(2, '0');
+  charSeqCounter.textContent = `${pad(charSeqIdx + 1)} / ${pad(charSeqImages.length)}`;
+  charSeqPrev.disabled = charSeqIdx === 0;
+  charSeqNext.disabled = charSeqIdx === charSeqImages.length - 1;
+}
+charSeqPrev && charSeqPrev.addEventListener('click', () => { if (charSeqIdx > 0) { charSeqIdx--; renderCharSeq(); } });
+charSeqNext && charSeqNext.addEventListener('click', () => { if (charSeqIdx < charSeqImages.length - 1) { charSeqIdx++; renderCharSeq(); } });
+document.addEventListener('keydown', e => {
+  const sec = document.getElementById('characters');
+  if (!sec) return;
+  const r = sec.getBoundingClientRect();
+  if (!(r.top < window.innerHeight && r.bottom > 0)) return;
+  if (e.key === 'ArrowLeft') charSeqPrev && charSeqPrev.click();
+  if (e.key === 'ArrowRight') charSeqNext && charSeqNext.click();
+});
+renderCharSeq();
 
 // CONTACT FORM — AJAX submit to Netlify Forms
 const contactForm = document.querySelector('form[name="contacto"]');
