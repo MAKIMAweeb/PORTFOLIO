@@ -174,12 +174,12 @@
   .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:start; }
   .about-text p { font-size:1.05rem; line-height:1.8; color:#bbb; margin-bottom:1.5rem; }
   .about-text p strong { color:var(--text); }
-  .about-stats { display:grid; grid-template-columns:1fr 1fr; gap:1.5px; background:var(--border); border:1px solid var(--border); }
+  .about-stats { display:grid; grid-template-columns:1fr 1fr; gap:1.5px; background:var(--border); border:1px solid var(--border); container-type:inline-size; }
   .stat { background:var(--surface); padding:2.5rem 2rem; position:relative; overflow:hidden; transition:background .3s; }
   .stat:hover { background:var(--surface2); }
   .stat::after { content:''; position:absolute; bottom:0; left:0; width:0; height:2px; background:var(--accent); transition:width .4s; }
   .stat:hover::after { width:100%; }
-  .stat-num { font-family:'Syne',sans-serif; font-size:clamp(2rem,3.5vw,3.5rem); font-weight:800; color:var(--accent); line-height:1; margin-bottom:.6rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .stat-num { font-family:'Syne',sans-serif; font-size:clamp(1.6rem,8cqw,3.5rem); font-weight:800; color:var(--accent); line-height:1; margin-bottom:.6rem; white-space:nowrap; }
   .stat-label { font-family:'DM Mono',monospace; font-size:.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:.1em; }
   .soft-skills { display:flex; flex-wrap:wrap; gap:.75rem; margin-top:1.5rem; }
   .soft-pill { border:1px solid var(--border); padding:.5rem 1.25rem; font-size:.8rem; color:var(--muted); font-family:'DM Mono',monospace; letter-spacing:.05em; border-radius:100px; transition:border-color .2s,color .2s; }
@@ -689,8 +689,6 @@
         <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v001.jpg"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v001.jpg" alt="Weapon v001"></div></div>
         <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v002.jpg"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v002.jpg" alt="Weapon v002"></div></div>
         <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v003.jpg"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v003.jpg" alt="Weapon v003"></div></div>
-        <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v004.jpg"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v004.jpg" alt="Weapon v004"></div></div>
-        <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v005.jpg"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v005.jpg" alt="Weapon v005"></div></div>
         <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v006.jpg"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v006.jpg" alt="Weapon v006"></div></div>
         <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v007.jpg"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v007.jpg" alt="Weapon v007"></div></div>
         <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v008.jpg"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v008.jpg" alt="Weapon v008"></div></div>
@@ -701,7 +699,6 @@
         <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v013.jpg"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v013.jpg" alt="Weapon v013"></div></div>
         <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v014.jpg"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v014.jpg" alt="Weapon v014"></div></div>
         <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v015.jpg"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v015.jpg" alt="Weapon v015"></div></div>
-        <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v016.jpg"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v016.jpg" alt="Weapon v016"></div></div>
         <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v017.jpg"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v017.jpg" alt="Weapon v017"></div></div>
       </div>
       <button class="d3-close" id="d3-weapon-close" style="display:none">✕ Close Weapon renders</button>
@@ -728,7 +725,6 @@
         <div class="d3-render-item lightbox-trigger" data-src="img/katana img/katana_fondoNegro_004.jpg"><div class="d3-render-item-inner"><img src="img/katana img/katana_fondoNegro_004.jpg" alt="Katana fondoNegro 004"></div></div>
         <div class="d3-render-item lightbox-trigger" data-src="img/katana img/katana_fondoNegro_005.png"><div class="d3-render-item-inner"><img src="img/katana img/katana_fondoNegro_005.png" alt="Katana fondoNegro 005"></div></div>
         <div class="d3-render-item lightbox-trigger" data-src="img/katana img/katana_fondoNegro_006.png"><div class="d3-render-item-inner"><img src="img/katana img/katana_fondoNegro_006.png" alt="Katana fondoNegro 006"></div></div>
-        <div class="d3-render-item lightbox-trigger" data-src="img/katana img/katana_fondoNegro_007.png"><div class="d3-render-item-inner"><img src="img/katana img/katana_fondoNegro_007.png" alt="Katana fondoNegro 007"></div></div>
       </div>
       <button class="d3-close" id="d3-katana-close" style="display:none">✕ Close Katana renders</button>
     </div>
