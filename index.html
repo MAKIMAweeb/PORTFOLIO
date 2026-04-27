@@ -832,7 +832,7 @@
       <p class="section-label">06 — Contact</p>
       <h2 class="section-title">Let's work<br>together.</h2>
       <p>Open to freelance projects, collaborations and studio opportunities. Let's create something unforgettable.</p>
-      <a href="mailto:santiagojmgt@gmail.com" class="contact-email">santiagojmgt@gmail.com</a>
+      <a href="mailto:sjimenezmgt@gmail.com" class="contact-email" target="_blank" rel="noopener">sjimenezmgt@gmail.com</a>
       <div class="socials">
         <a href="https://www.instagram.com/santi_jm_anim?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" class="social-link" target="_blank" rel="noopener">
           <span class="social-icon">IG</span> Instagram
@@ -842,15 +842,31 @@
         </a>
       </div>
     </div>
-    <form class="contact-form reveal" name="contacto" method="POST" data-netlify="true" netlify-honeypot="bot-field">
-      <input type="hidden" name="form-name" value="contacto">
-      <p style="display:none"><label>No fill: <input name="bot-field"></label></p>
-      <div class="form-group"><label class="form-label" for="nombre">Name</label><input id="nombre" type="text" name="nombre" class="form-input" placeholder="Your name" required></div>
-      <div class="form-group"><label class="form-label" for="email">Email</label><input id="email" type="email" name="email" class="form-input" placeholder="your@email.com" required></div>
-      <div class="form-group"><label class="form-label" for="mensaje">Message</label><textarea id="mensaje" name="mensaje" class="form-input" placeholder="Tell me about your project..." required></textarea></div>
-      <button type="submit" class="btn-send">Send message</button>
-      <div class="form-status" id="form-status"></div>
+    <div data-fs-success style="display:none" class="form-status ok">&#10003; Message sent! I'll get back to you soon.</div>
+    <div data-fs-error style="display:none" class="form-status err"></div>
+    <form id="contacto-form" class="contact-form reveal">
+      <div class="form-group">
+        <label class="form-label" for="nombre">Name</label>
+        <input id="nombre" type="text" name="nombre" class="form-input" placeholder="Your name" required data-fs-field>
+        <span data-fs-error="nombre" style="color:#ff4444;font-size:.8rem;margin-top:.25rem;display:block"></span>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="email">Email</label>
+        <input id="email" type="email" name="email" class="form-input" placeholder="your@email.com" required data-fs-field>
+        <span data-fs-error="email" style="color:#ff4444;font-size:.8rem;margin-top:.25rem;display:block"></span>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="mensaje">Message</label>
+        <textarea id="mensaje" name="mensaje" class="form-input" placeholder="Tell me about your project..." required data-fs-field></textarea>
+        <span data-fs-error="mensaje" style="color:#ff4444;font-size:.8rem;margin-top:.25rem;display:block"></span>
+      </div>
+      <button type="submit" class="btn-send" data-fs-submit-btn>Send message</button>
     </form>
+    <script>
+      window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+      formspree('initForm', { formElement: '#contacto-form', formId: 'mojyzrbn' });
+    </script>
+    <script src="https://unpkg.com/@formspree/ajax@1" defer></script>
   </div>
 </section>
 
@@ -1061,15 +1077,30 @@ document.querySelectorAll('.illus-media img, .render-media img, .d3-render-item-
   img.setAttribute('decoding','async');
 });
 
-/* ── CONTACT FORM ── */
+/* ── CONTACT FORM (Formspree) ── */
 const contactForm=document.querySelector('form[name="contacto"]'),formStatus=document.getElementById('form-status');
 contactForm&&contactForm.addEventListener('submit',async e=>{
-  e.preventDefault();formStatus.className='form-status';formStatus.textContent='Sending...';
+  e.preventDefault();
+  formStatus.className='form-status';
+  formStatus.textContent='Sending...';
   try{
-    const res=await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(contactForm)).toString()});
-    if(res.ok){formStatus.classList.add('ok');formStatus.textContent='Thanks! I\'ll get back to you soon.';contactForm.reset();}
-    else throw new Error();
-  }catch{formStatus.classList.add('err');formStatus.textContent='Something went wrong. Email me directly.';}
+    const res=await fetch(contactForm.action,{
+      method:'POST',
+      headers:{'Accept':'application/json'},
+      body:new FormData(contactForm)
+    });
+    const data=await res.json();
+    if(res.ok){
+      formStatus.classList.add('ok');
+      formStatus.textContent='✓ Message sent! I\'ll get back to you soon.';
+      contactForm.reset();
+    } else {
+      throw new Error(data?.errors?.[0]?.message||'Error');
+    }
+  }catch(err){
+    formStatus.classList.add('err');
+    formStatus.textContent='Something went wrong. Email me directly at sjimenezmgt@gmail.com';
+  }
 });
 </script>
 </body>
