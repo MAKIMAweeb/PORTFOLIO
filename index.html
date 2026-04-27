@@ -1079,89 +1079,274 @@ document.querySelectorAll('.illus-media img, .render-media img, .d3-render-item-
 
 
 
-/* ── GRAVITY ANIMATION ON FORM SUCCESS ── */
+/* ── FLASHY GRAVITY ANIMATION — GPU-optimised ── */
+(function createOverlay() {
+  const style = document.createElement('style');
+  style.textContent = `
+    #success-overlay {
+      position: fixed; inset: 0; z-index: 9990;
+      background: #0a0a0f;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+    #success-overlay.visible { opacity: 1; pointer-events: all; }
+    .success-box {
+      text-align: center; max-width: 520px; padding: 3rem 2rem;
+      position: relative; z-index: 2;
+    }
+    .success-icon-wrap {
+      position: relative; display: inline-block;
+      margin-bottom: 1.5rem;
+    }
+    .success-icon {
+      font-size: 4rem; color: #c8ff00;
+      display: block;
+      animation: successSpin 2s cubic-bezier(.34,1.56,.64,1) both,
+                 successPulse 1.5s ease-in-out 2s infinite alternate;
+    }
+    @keyframes successSpin {
+      0%   { transform: scale(0) rotate(-180deg); opacity: 0; }
+      60%  { transform: scale(1.3) rotate(20deg); opacity: 1; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+    @keyframes successPulse {
+      from { text-shadow: 0 0 20px rgba(200,255,0,.4); }
+      to   { text-shadow: 0 0 60px rgba(200,255,0,.9), 0 0 120px rgba(200,255,0,.3); }
+    }
+    .success-rings {
+      position: absolute; inset: -30px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .success-ring {
+      position: absolute; border-radius: 50%;
+      border: 1px solid #c8ff00;
+      animation: ringExpand 1.8s ease-out forwards;
+      opacity: 0;
+    }
+    .success-ring:nth-child(1) { animation-delay: 0.1s; }
+    .success-ring:nth-child(2) { animation-delay: 0.35s; }
+    .success-ring:nth-child(3) { animation-delay: 0.6s; }
+    @keyframes ringExpand {
+      0%   { width: 20px; height: 20px; opacity: 0.9; }
+      100% { width: 200px; height: 200px; opacity: 0; }
+    }
+    .success-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.8rem, 7vw, 5rem);
+      font-weight: 800; color: #f0f0ee; margin-bottom: .75rem;
+      letter-spacing: -0.04em; line-height: 1;
+      animation: titleSlide 0.7s cubic-bezier(.16,1,.3,1) 0.3s both;
+    }
+    @keyframes titleSlide {
+      from { transform: translateY(30px); opacity: 0; }
+      to   { transform: translateY(0); opacity: 1; }
+    }
+    .success-accent { color: #c8ff00; }
+    .success-sub {
+      font-size: 1rem; line-height: 1.7; color: #888890; margin-bottom: 2.5rem;
+      animation: titleSlide 0.7s cubic-bezier(.16,1,.3,1) 0.5s both;
+    }
+    .success-btn {
+      background: #c8ff00; color: #0a0a0f;
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: .9rem; letter-spacing: .08em; text-transform: uppercase;
+      border: none; padding: 1.1rem 3rem; cursor: pointer;
+      border-radius: 2px; transition: transform .2s, box-shadow .2s;
+      animation: titleSlide 0.7s cubic-bezier(.16,1,.3,1) 0.7s both;
+    }
+    .success-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 24px 60px rgba(200,255,0,.35);
+    }
+    /* Flash overlay */
+    #gravity-flash {
+      position: fixed; inset: 0; z-index: 9980;
+      background: #c8ff00; opacity: 0; pointer-events: none;
+      transition: opacity 0.08s ease;
+    }
+    #gravity-flash.on { opacity: 0.18; }
+    /* Particle canvas */
+    #gravity-particles {
+      position: fixed; inset: 0; z-index: 9970; pointer-events: none;
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Flash element
+  const flash = document.createElement('div');
+  flash.id = 'gravity-flash';
+  document.body.appendChild(flash);
+
+  // Particle canvas
+  const pCanvas = document.createElement('canvas');
+  pCanvas.id = 'gravity-particles';
+  document.body.appendChild(pCanvas);
+
+  // Overlay
+  const overlay = document.createElement('div');
+  overlay.id = 'success-overlay';
+  overlay.innerHTML = `
+    <div class="success-box">
+      <div class="success-icon-wrap">
+        <div class="success-rings">
+          <div class="success-ring"></div>
+          <div class="success-ring"></div>
+          <div class="success-ring"></div>
+        </div>
+        <span class="success-icon">✦</span>
+      </div>
+      <h2 class="success-title">Message<br><span class="success-accent">sent.</span></h2>
+      <p class="success-sub">Thanks for reaching out —<br>I'll get back to you soon.</p>
+      <button class="success-btn" onclick="dismissOverlay()">Back to portfolio</button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+})();
+
 function triggerGravityAnimation() {
-  // Collect all visible elements worth animating
+  const W = window.innerWidth, H = window.innerHeight;
+
+  // ── 1. Select only elements currently in viewport ──
   const targets = [...document.querySelectorAll(
-    'nav, #hero, .ticker, section, .reel-strip, footer, .contact-grid > *'
+    'nav, .ticker, section, .reel-strip, footer'
   )].filter(el => {
     const r = el.getBoundingClientRect();
-    return r.width > 0 && r.height > 0;
-  });
+    return r.width > 0 && r.bottom > -100 && r.top < H + 100;
+  }).slice(0, 18); // hard cap — never animate more than 18 elements
 
-  // Freeze positions
-  targets.forEach(el => {
-    const r = el.getBoundingClientRect();
-    const scrollY = window.scrollY;
-    el.style.position = 'fixed';
-    el.style.top = (r.top) + 'px';
-    el.style.left = r.left + 'px';
-    el.style.width = r.width + 'px';
-    el.style.margin = '0';
-    el.style.zIndex = '10';
-    el.style.transition = 'none';
-    el._origStyles = {
-      position: el.style.position,
-      top: el.style.top,
-      left: el.style.left,
-      width: el.style.width,
-      transform: el.style.transform,
-      transition: el.style.transition,
-    };
-  });
-
-  // Physics simulation
-  const gravity = 0.6;
+  // ── 2. Snapshot positions, promote to GPU layer ──
   const bodies = targets.map(el => {
     const r = el.getBoundingClientRect();
+    const cx = r.left + r.width / 2;
+    const cy = r.top + r.height / 2;
+    // Store original layout values
+    el._grav = {
+      pos: el.style.position, top: el.style.top, left: el.style.left,
+      width: el.style.width, margin: el.style.margin,
+      transform: el.style.transform, transition: el.style.transition,
+      willChange: el.style.willChange, zIndex: el.style.zIndex,
+    };
+    // Freeze in place using fixed + transform (GPU path)
+    el.style.cssText += `;position:fixed;top:${r.top}px;left:${r.left}px;width:${r.width}px;margin:0;transition:none;will-change:transform;z-index:50;`;
     return {
       el,
-      x: r.left,
-      y: r.top,
-      vx: (Math.random() - 0.5) * 6,
-      vy: Math.random() * -4,
+      tx: 0, ty: 0,         // translate offsets (transform only — no layout reflow)
+      vx: (Math.random() - 0.5) * 10,
+      vy: -2 - Math.random() * 5,
       rot: 0,
-      rotV: (Math.random() - 0.5) * 4,
-      floor: window.innerHeight + 300,
+      rotV: (Math.random() - 0.5) * 5,
+      scale: 1,
+      opacity: 1,
     };
   });
 
-  let frame;
+  // ── 3. Particle system on canvas ──
+  const pCanvas = document.getElementById('gravity-particles');
+  pCanvas.width = W; pCanvas.height = H;
+  const ctx = pCanvas.getContext('2d');
+  const PARTICLE_COUNT = 60; // low count, high visual impact
+  const particles = Array.from({length: PARTICLE_COUNT}, () => ({
+    x: W * 0.3 + Math.random() * W * 0.4,
+    y: H * 0.4 + Math.random() * H * 0.2,
+    vx: (Math.random() - 0.5) * 14,
+    vy: -Math.random() * 16 - 4,
+    life: 1,
+    decay: 0.012 + Math.random() * 0.018,
+    size: 2 + Math.random() * 5,
+    color: Math.random() > 0.4 ? '#c8ff00' : Math.random() > 0.5 ? '#ffffff' : '#ff6b35',
+    trail: [],
+  }));
+
+  // ── 4. Flash burst ──
+  const flash = document.getElementById('gravity-flash');
+  flash.classList.add('on');
+  setTimeout(() => flash.classList.remove('on'), 120);
+  setTimeout(() => { flash.classList.add('on'); setTimeout(() => flash.classList.remove('on'), 80); }, 200);
+
+  // ── 5. RAF loop — single loop drives everything ──
+  const gravity = 0.55;
   const startTime = performance.now();
-  const fallDuration = 2200;
+  const FALL_DURATION = 2000;
+  let rafId;
 
   function step(now) {
     const elapsed = now - startTime;
+    const t = Math.min(elapsed / FALL_DURATION, 1);
+
+    // Batch DOM writes after all reads
+    const updates = [];
+
+    // Physics bodies
     bodies.forEach(b => {
       b.vy += gravity;
-      b.x += b.vx;
-      b.y += b.vy;
+      b.tx += b.vx;
+      b.ty += b.vy;
       b.rot += b.rotV;
-      b.el.style.left = b.x + 'px';
-      b.el.style.top = b.y + 'px';
-      b.el.style.transform = `rotate(${b.rot}deg)`;
+      b.opacity = Math.max(0, 1 - t * 0.6);
+      updates.push(() => {
+        b.el.style.transform = `translate(${b.tx}px,${b.ty}px) rotate(${b.rot}deg)`;
+        b.el.style.opacity = b.opacity;
+      });
     });
-    if (elapsed < fallDuration) {
-      frame = requestAnimationFrame(step);
+
+    // Particles
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      if (p.life <= 0) return;
+      p.trail.push({x: p.x, y: p.y});
+      if (p.trail.length > 6) p.trail.shift();
+      p.vx *= 0.98; p.vy += 0.3;
+      p.x += p.vx; p.y += p.vy;
+      p.life -= p.decay;
+      const alpha = Math.max(0, p.life);
+      // Trail
+      if (p.trail.length > 1) {
+        ctx.beginPath();
+        ctx.moveTo(p.trail[0].x, p.trail[0].y);
+        p.trail.forEach(pt => ctx.lineTo(pt.x, pt.y));
+        ctx.strokeStyle = p.color;
+        ctx.globalAlpha = alpha * 0.35;
+        ctx.lineWidth = p.size * 0.4;
+        ctx.stroke();
+      }
+      // Dot
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size * alpha, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = alpha;
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+
+    // Apply DOM updates in one batch
+    updates.forEach(fn => fn());
+
+    if (elapsed < FALL_DURATION) {
+      rafId = requestAnimationFrame(step);
     } else {
-      // Show success overlay
+      // Clear particle canvas
+      ctx.clearRect(0, 0, W, H);
       showSuccessOverlay();
     }
   }
-  frame = requestAnimationFrame(step);
+  rafId = requestAnimationFrame(step);
 
-  // Restore after overlay dismiss
   window._restorePage = function() {
-    cancelAnimationFrame(frame);
+    cancelAnimationFrame(rafId);
+    ctx.clearRect(0, 0, W, H);
     targets.forEach(el => {
-      el.style.position = '';
-      el.style.top = '';
-      el.style.left = '';
-      el.style.width = '';
-      el.style.margin = '';
-      el.style.transform = '';
-      el.style.transition = '';
-      el.style.zIndex = '';
+      const g = el._grav;
+      el.style.position  = g.pos;
+      el.style.top       = g.top;
+      el.style.left      = g.left;
+      el.style.width     = g.width;
+      el.style.margin    = g.margin;
+      el.style.transform = g.transform;
+      el.style.transition= g.transition;
+      el.style.willChange= g.willChange;
+      el.style.zIndex    = g.zIndex;
+      el.style.opacity   = '';
     });
     document.body.style.overflow = '';
     window.scrollTo(0, 0);
@@ -1171,79 +1356,17 @@ function triggerGravityAnimation() {
 function showSuccessOverlay() {
   const overlay = document.getElementById('success-overlay');
   if (!overlay) return;
+  // Re-trigger icon animation by cloning
+  const icon = overlay.querySelector('.success-icon');
+  if (icon) { icon.style.animation = 'none'; icon.offsetHeight; icon.style.animation = ''; }
   overlay.classList.add('visible');
   document.body.style.overflow = 'hidden';
 }
 
-// Create success overlay element
-(function createOverlay() {
-  const overlay = document.createElement('div');
-  overlay.id = 'success-overlay';
-  overlay.innerHTML = `
-    <div class="success-box">
-      <div class="success-icon">✦</div>
-      <h2 class="success-title">Message sent.</h2>
-      <p class="success-sub">Thanks for reaching out — I'll get back to you soon.</p>
-      <button class="success-btn" onclick="dismissOverlay()">Back to portfolio</button>
-    </div>
-  `;
-  document.body.appendChild(overlay);
-
-  const style = document.createElement('style');
-  style.textContent = `
-    #success-overlay {
-      position: fixed; inset: 0; z-index: 9990;
-      background: rgba(10,10,15,0.97);
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none;
-      transition: opacity 0.6s ease;
-      backdrop-filter: blur(12px);
-    }
-    #success-overlay.visible {
-      opacity: 1; pointer-events: all;
-    }
-    .success-box {
-      text-align: center; max-width: 480px; padding: 3rem 2rem;
-      animation: successPop 0.7s cubic-bezier(.34,1.56,.64,1) both;
-    }
-    @keyframes successPop {
-      from { transform: translateY(40px) scale(0.9); opacity: 0; }
-      to   { transform: translateY(0) scale(1); opacity: 1; }
-    }
-    .success-icon {
-      font-size: 3rem; color: #c8ff00; margin-bottom: 1.5rem;
-      animation: spin 3s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .success-title {
-      font-family: 'Syne', sans-serif; font-size: clamp(2.5rem,6vw,4rem);
-      font-weight: 800; color: #f0f0ee; margin-bottom: 1rem;
-      letter-spacing: -0.03em;
-    }
-    .success-sub {
-      font-size: 1rem; line-height: 1.7; color: #888890; margin-bottom: 2.5rem;
-    }
-    .success-btn {
-      background: #c8ff00; color: #0a0a0f;
-      font-family: 'Syne', sans-serif; font-weight: 700;
-      font-size: .9rem; letter-spacing: .05em;
-      border: none; padding: 1rem 2.5rem; cursor: pointer;
-      border-radius: 2px; transition: transform .2s, box-shadow .2s;
-    }
-    .success-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 20px 60px rgba(200,255,0,.3);
-    }
-  `;
-  document.head.appendChild(style);
-})();
-
 window.dismissOverlay = function() {
   const overlay = document.getElementById('success-overlay');
   overlay.classList.remove('visible');
-  if (window._restorePage) {
-    setTimeout(window._restorePage, 600);
-  }
+  if (window._restorePage) setTimeout(window._restorePage, 500);
 };
 
 /* ── Hook into Formspree SDK success event ── */
