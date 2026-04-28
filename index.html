@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Santiago Jiménez — 3D/2D Animator</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@300;400&family=Bricolage+Grotesque:wght@300;400;600&display=swap" rel="stylesheet">
@@ -118,9 +118,30 @@
   .dropdown-menu .dm-sep { height: 1px; background: rgba(200,255,0,.1); margin: .4rem .8rem; opacity: 1; transform: none; }
 
   /* HAMBURGER */
-  .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; color: var(--muted); }
+  .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; background: none; border: none; color: var(--muted); min-height: 44px; min-width: 44px; justify-content: center; align-items: center; }
   .nav-hamburger span { display: block; width: 22px; height: 1.5px; background: currentColor; transition: all .3s; }
-  .nav-mobile { display: none; }
+  .nav-hamburger:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* MOBILE NAV */
+  .nav-mobile { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(10,10,15,.98); backdrop-filter: blur(8px); z-index: 499; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .nav-mobile.open { display: flex; flex-direction: column; }
+  
+  .nav-mobile-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(10,10,15,.98); backdrop-filter: blur(8px); }
+  .nav-mobile-header .nav-logo { font-size: 1rem; }
+  .nav-mobile-close { background: none; border: none; color: var(--muted); font-size: 1.5rem; cursor: pointer; padding: 8px; min-width: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center; transition: color .2s; }
+  .nav-mobile-close:hover { color: var(--accent); }
+  .nav-mobile-close:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+  /* MOBILE NAV SECTIONS */
+  .nav-mobile-content { padding: 1rem 0; flex: 1; }
+  
+  .nav-section { border-bottom: 1px solid var(--border); }
+  .nav-section-title { font-family: 'DM Mono', monospace; font-size: .65rem; color: var(--accent); letter-spacing: .1em; text-transform: uppercase; padding: 1rem 1.5rem .75rem; }
+  
+  .nav-mobile a { display: block; padding: .75rem 1.5rem; color: var(--muted); text-decoration: none; font-family: 'DM Mono', monospace; font-size: .8rem; letter-spacing: .05em; text-transform: uppercase; transition: all .2s; border-left: 2px solid transparent; min-height: 44px; display: flex; align-items: center; }
+  .nav-mobile a:hover { color: var(--text); background: rgba(200,255,0,.06); border-left-color: var(--accent); }
+  .nav-mobile a.nav-accent { color: var(--accent); }
+  .nav-mobile a:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 
   /* HERO */
   #hero { min-height: 100vh; display: flex; align-items: center; padding: 8rem 3rem 4rem; position: relative; overflow: hidden; }
@@ -147,8 +168,10 @@
   .hero-actions { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; animation: fadeIn 1s .7s both; }
   .btn-primary { background: var(--accent); color: #0a0a0f; padding: 1rem 2.5rem; font-family: 'Syne', sans-serif; font-weight: 700; font-size: .9rem; letter-spacing: .05em; text-decoration: none; border-radius: 2px; border: 0; cursor: pointer; transition: transform .2s, box-shadow .3s; display: inline-block; }
   .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 20px 60px rgba(200,255,0,.3); }
+  .btn-primary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .btn-ghost { color: var(--muted); font-family: 'DM Mono', monospace; font-size: .8rem; text-decoration: none; letter-spacing: .1em; display: flex; align-items: center; gap: .5rem; transition: color .2s; }
   .btn-ghost:hover { color: var(--text); }
+  .btn-ghost:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .btn-ghost::after { content: '↓'; animation: bounce 2s infinite; }
   @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
 
@@ -227,9 +250,10 @@
   .seq-viewer { position: relative; width: 100%; aspect-ratio: 16/9; background: var(--surface); border: 1px solid var(--border); border-radius: 2px; overflow: hidden; margin-bottom: 1rem; cursor: zoom-in; }
   .seq-viewer img { width: 100%; height: 100%; object-fit: contain; display: block; background: #000; }
   .seq-controls { display: flex; align-items: center; justify-content: space-between; gap: 1rem; background: var(--surface); border: 1px solid var(--border); padding: .75rem 1rem; border-radius: 2px; }
-  .seq-btn { background: transparent; color: var(--text); border: 1px solid var(--border); padding: .5rem 1.25rem; font-family: 'DM Mono', monospace; font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; transition: border-color .2s, color .2s; }
+  .seq-btn { background: transparent; color: var(--text); border: 1px solid var(--border); padding: .75rem 1.5rem; font-family: 'DM Mono', monospace; font-size: .8rem; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; transition: border-color .2s, color .2s; min-height: 44px; display: flex; align-items: center; }
   .seq-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
   .seq-btn:disabled { opacity: .35; cursor: not-allowed; }
+  .seq-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
   .seq-counter { font-family: 'DM Mono', monospace; font-size: .8rem; color: var(--muted); }
 
   /* video */
@@ -249,6 +273,7 @@
   /* Script reveal panel */
   .script-toggle { background: transparent; border: 1px solid var(--border); color: var(--muted); font-family: 'DM Mono', monospace; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; padding: .5rem 1rem; cursor: pointer; transition: border-color .2s, color .2s; }
   .script-toggle:hover { border-color: var(--accent); color: var(--accent); }
+  .script-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .script-panel { overflow: hidden; max-height: 0; transition: max-height .6s cubic-bezier(.16,1,.3,1), opacity .4s; opacity: 0; }
   .script-panel.open { max-height: 600px; opacity: 1; }
   .script-img-wrap { margin-top: 1rem; border: 1px solid var(--border); border-radius: 2px; overflow: hidden; cursor: zoom-in; }
@@ -285,6 +310,7 @@
   .d3-cover-sub { font-family: 'DM Mono', monospace; font-size: .75rem; color: var(--muted); letter-spacing: .15em; text-transform: uppercase; }
   .d3-cover-hint { position: absolute; bottom: 1rem; right: 1rem; font-family: 'DM Mono', monospace; font-size: .68rem; color: var(--accent); letter-spacing: .1em; text-transform: uppercase; opacity: 0; transition: opacity .2s; }
   .d3-cover:hover .d3-cover-hint { opacity: 1; }
+  .d3-cover:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
   .d3-cover canvas { position: absolute; inset: 0; pointer-events: none; }
 
   .d3-renders {
@@ -312,6 +338,7 @@
   .illus-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(240px,1fr)); gap: 1rem; }
   .illus-card { background: var(--surface); border: 1px solid var(--border); border-radius: 2px; overflow: hidden; cursor: zoom-in; transition: border-color .2s, transform .2s; }
   .illus-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+  .illus-card:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
   .illus-media { aspect-ratio: 1/1; background: var(--surface2); display: flex; align-items: center; justify-content: center; overflow: hidden; }
   .illus-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .illus-placeholder { font-family: 'DM Mono', monospace; font-size: .7rem; color: var(--muted); text-align: center; padding: 1rem; }
@@ -323,8 +350,9 @@
   .lightbox { position: fixed; inset: 0; background: rgba(0,0,0,.93); z-index: 8000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity .3s; }
   .lightbox.open { opacity: 1; pointer-events: all; }
   .lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; border: 1px solid var(--border); border-radius: 2px; }
-  .lb-close { position: absolute; top: 1.5rem; right: 2rem; font-family: 'DM Mono', monospace; font-size: .8rem; color: var(--muted); cursor: pointer; letter-spacing: .1em; transition: color .2s; }
+  .lb-close { position: absolute; top: 1.5rem; right: 2rem; font-family: 'DM Mono', monospace; font-size: .8rem; color: var(--muted); cursor: pointer; letter-spacing: .1em; transition: color .2s; min-width: 44px; min-height: 44px; display: flex; align-items: center; justify-content: center; }
   .lb-close:hover { color: var(--accent); }
+  .lb-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
   /* CONTACT */
   .contact { padding: 8rem 3rem; border-top: 1px solid var(--border); max-width: 1200px; margin: 0 auto; }
@@ -333,18 +361,21 @@
   .contact-info p { color: var(--muted); font-size: 1.05rem; line-height: 1.7; margin-bottom: 2rem; max-width: 420px; }
   .contact-email { display: inline-block; font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 700; color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent); padding-bottom: .25rem; transition: opacity .2s; }
   .contact-email:hover { opacity: .7; }
+  .contact-email:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .socials { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1rem; }
-  .social-link { display: inline-flex; align-items: center; gap: .6rem; border: 1px solid var(--border); padding: .55rem 1rem; font-family: 'DM Mono', monospace; font-size: .78rem; color: var(--muted); letter-spacing: .05em; text-decoration: none; transition: border-color .2s, color .2s; }
+  .social-link { display: inline-flex; align-items: center; gap: .6rem; border: 1px solid var(--border); padding: .75rem 1.25rem; font-family: 'DM Mono', monospace; font-size: .78rem; color: var(--muted); letter-spacing: .05em; text-decoration: none; transition: border-color .2s, color .2s; min-height: 44px; }
   .social-link:hover { border-color: var(--accent); color: var(--accent); }
+  .social-link:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
   .social-icon { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; background: var(--surface2); border-radius: 50%; font-size: .65rem; font-weight: 700; }
   .contact-form { background: var(--surface); border: 1px solid var(--border); padding: 2.5rem; border-radius: 2px; display: flex; flex-direction: column; gap: 1.25rem; }
   .form-group { display: flex; flex-direction: column; gap: .5rem; }
   .form-label { font-family: 'DM Mono', monospace; font-size: .7rem; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; }
   .form-input { background: transparent; border: 0; border-bottom: 1px solid var(--border); padding: .8rem 0; font-family: 'Bricolage Grotesque', sans-serif; font-size: 1rem; color: var(--text); outline: none; transition: border-color .2s; }
-  .form-input:focus { border-color: var(--accent); }
+  .form-input:focus { border-color: var(--accent); box-shadow: 0 1px 0 0 var(--accent); }
   textarea.form-input { min-height: 120px; resize: vertical; }
-  .btn-send { margin-top: .5rem; background: var(--accent); color: #0a0a0f; padding: 1rem 2.5rem; border: 0; font-family: 'Syne', sans-serif; font-weight: 700; font-size: .9rem; letter-spacing: .05em; cursor: pointer; border-radius: 2px; transition: transform .2s, box-shadow .3s; }
+  .btn-send { margin-top: .5rem; background: var(--accent); color: #0a0a0f; padding: 1rem 2.5rem; border: 0; font-family: 'Syne', sans-serif; font-weight: 700; font-size: .9rem; letter-spacing: .05em; cursor: pointer; border-radius: 2px; transition: transform .2s, box-shadow .3s; min-height: 44px; }
   .btn-send:hover { transform: translateY(-2px); box-shadow: 0 20px 60px rgba(200,255,0,.3); }
+  .btn-send:focus-visible { outline: 2px solid #0a0a0f; outline-offset: 2px; }
   .form-status { font-family: 'DM Mono', monospace; font-size: .8rem; color: var(--muted); min-height: 1rem; }
   .form-status.ok { color: var(--accent); }
   .form-status.err { color: var(--accent2); }
@@ -366,11 +397,6 @@
     nav { padding: 1rem 1.5rem; }
     nav ul { display: none; }
     .nav-hamburger { display: flex; }
-    .nav-mobile { display: none; flex-direction: column; position: fixed; top: 60px; left: 0; right: 0; background: rgba(10,10,15,.98); border-bottom: 1px solid var(--border); padding: 1.5rem; gap: 1.2rem; z-index: 499; }
-    .nav-mobile.open { display: flex; }
-    .nav-mobile a { font-family: 'DM Mono', monospace; font-size: .85rem; color: var(--muted); text-decoration: none; text-transform: uppercase; letter-spacing: .1em; padding: .5rem 0; border-bottom: 1px solid var(--border); transition: color .2s; }
-    .nav-mobile a:last-child { border-bottom: none; }
-    .nav-mobile a:hover { color: var(--accent); }
     section { padding: 4rem 1.5rem; }
     #hero { padding: 7rem 1.5rem 3rem; }
     .about-grid { grid-template-columns: 1fr; gap: 3rem; }
@@ -390,6 +416,7 @@
     .video-grid { grid-template-columns: 1fr; }
     h1 { font-size: clamp(2.8rem,12vw,5rem); }
     .layout-small-grid { grid-template-columns: 1fr; }
+    .social-link { flex-direction: column; text-align: center; }
   }
 </style>
 </head>
@@ -401,7 +428,7 @@
 
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox">
-  <span class="lb-close" id="lb-close">✕ Close</span>
+  <span class="lb-close" id="lb-close">✕</span>
   <img id="lb-img" src="" alt="">
 </div>
 
@@ -410,7 +437,6 @@
   <a href="#hero" class="nav-logo">SJ.</a>
   <ul>
     <li><a href="#about">About</a></li>
-
     <li class="nav-dropdown">
       <a href="#gallery">Gallery</a>
       <div class="dropdown-menu">
@@ -423,10 +449,8 @@
         <a href="#sketches">Sketches &amp; Studies</a>
       </div>
     </li>
-
     <li><a href="#experience">Experience</a></li>
     <li><a href="#skills">Skills</a></li>
-
     <li class="nav-dropdown">
       <a href="#projects">Projects</a>
       <div class="dropdown-menu">
@@ -437,7 +461,6 @@
         <a href="#illustrations">MCA</a>
       </div>
     </li>
-
     <li class="nav-dropdown">
       <a href="#" class="nav-cv" onclick="return false">CV ↗</a>
       <div class="dropdown-menu" style="min-width:180px">
@@ -457,25 +480,49 @@
 </nav>
 
 <!-- MOBILE NAV -->
-<nav class="nav-mobile" id="nav-mobile">
-  <a href="#about">About</a>
-  <a href="#gallery">Gallery</a>
-  <a href="#reel">Animation Reel</a>
-  <a href="#storyboard">Storyboard</a>
-  <a href="#design3d">3D Design</a>
-  <a href="#layout">Layout &amp; Previs</a>
-  <a href="#characters">Character Design</a>
-  <a href="#illustrations">Illustrations</a>
-  <a href="#sketches">Sketches &amp; Studies</a>
-  <a href="#nataxhen">Nataxhen — Night Witches</a>
-  <a href="#characters">Zane</a>
-  <a href="#illustrations">MCA</a>
-  <a href="#experience">Experience</a>
-  <a href="#skills">Skills</a>
-  <a href="img/CV/CV_SantiagoJimenez_EN (1).pdf" target="_blank" rel="noopener" style="color:var(--accent)!important">CV — English ↗</a>
-  <a href="img/CV/CV_SantiagoJimenez_ES.pdf" target="_blank" rel="noopener" style="color:var(--accent)!important">CV — Español ↗</a>
-  <a href="img/CV/CV_SantiagoJimenez_FR.pdf" target="_blank" rel="noopener" style="color:var(--accent)!important">CV — Français ↗</a>
-  <a href="#contacto">Contact</a>
+<nav class="nav-mobile" id="nav-mobile" role="navigation" aria-label="Mobile navigation">
+  <div class="nav-mobile-header">
+    <a href="#hero" class="nav-logo">SJ.</a>
+    <button class="nav-mobile-close" id="nav-mobile-close" aria-label="Close menu">✕</button>
+  </div>
+  
+  <div class="nav-mobile-content">
+    <!-- Main Links -->
+    <div class="nav-section">
+      <a href="#about" class="nav-link">About</a>
+      <a href="#experience" class="nav-link">Experience</a>
+      <a href="#skills" class="nav-link">Skills</a>
+      <a href="#contacto" class="nav-link">Contact</a>
+    </div>
+
+    <!-- Gallery Section -->
+    <div class="nav-section">
+      <div class="nav-section-title">Gallery</div>
+      <a href="#reel">Animation Reel</a>
+      <a href="#storyboard">Storyboard</a>
+      <a href="#design3d">3D Design</a>
+      <a href="#layout">Layout &amp; Previs</a>
+      <a href="#characters">Character Design</a>
+      <a href="#illustrations">Illustrations</a>
+      <a href="#sketches">Sketches &amp; Studies</a>
+    </div>
+
+    <!-- Projects Section -->
+    <div class="nav-section">
+      <div class="nav-section-title">Projects</div>
+      <a href="#nataxhen">Nataxhen — Night Witches</a>
+      <a href="#characters">Zane</a>
+      <a href="#illustrations">MCA</a>
+    </div>
+
+    <!-- CV Section -->
+    <div class="nav-section">
+      <div class="nav-section-title">CV</div>
+      <a href="img/CV/CV_SantiagoJimenez_EN (1).pdf" target="_blank" rel="noopener" class="nav-accent">🇬🇧 English</a>
+      <a href="img/CV/CV_SantiagoJimenez_ES.pdf" target="_blank" rel="noopener" class="nav-accent">🇪🇸 Español</a>
+      <a href="img/CV/CV_SantiagoJimenez_FR.pdf" target="_blank" rel="noopener" class="nav-accent">🇫🇷 Français</a>
+    </div>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -572,7 +619,7 @@
 
     <!-- WEAPON PROJECT -->
     <div class="d3-project">
-      <div class="d3-cover" id="d3-weapon" data-project="weapon" style="background-image:url('img/arma/FD3D_SantiagoJimenez_proyectoFinal_v007.jpg');background-size:cover;background-position:center;">
+      <div class="d3-cover" id="d3-weapon" data-project="weapon" style="background-image:url('img/arma/FD3D_SantiagoJimenez_proyectoFinal_v007.jpg');background-size:cover;background-position:center;" tabindex="0">
         <canvas class="d3-particle-canvas" data-color="200,255,0"></canvas>
         <div class="d3-cover-placeholder" style="background:rgba(10,10,15,.55)">
           <div class="d3-cover-label">Weapon</div>
@@ -581,27 +628,27 @@
         <span class="d3-cover-hint">Click to explore renders →</span>
       </div>
       <div class="d3-renders" id="d3-weapon-renders">
-        <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v001.jpg"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v001.jpg" alt="Weapon render 01" loading="lazy" width="220" height="165"></div></div>
-        <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v002.jpg"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v002.jpg" alt="Weapon render 02" loading="lazy" width="220" height="165"></div></div>
-        <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v003.jpg"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v003.jpg" alt="Weapon render 03" loading="lazy" width="220" height="165"></div></div>
-        <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v006.jpg"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v006.jpg" alt="Weapon render 06" loading="lazy" width="220" height="165"></div></div>
-        <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v007.jpg"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v007.jpg" alt="Weapon render 07" loading="lazy" width="220" height="165"></div></div>
-        <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v008.jpg"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v008.jpg" alt="Weapon render 08" loading="lazy" width="220" height="165"></div></div>
-        <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v009.jpg"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v009.jpg" alt="Weapon render 09" loading="lazy" width="220" height="165"></div></div>
-        <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v010.jpg"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v010.jpg" alt="Weapon render 10" loading="lazy" width="220" height="165"></div></div>
-        <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v011.jpg"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v011.jpg" alt="Weapon render 11" loading="lazy" width="220" height="165"></div></div>
-        <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v012.jpg"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v012.jpg" alt="Weapon render 12" loading="lazy" width="220" height="165"></div></div>
-        <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v013.jpg"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v013.jpg" alt="Weapon render 13" loading="lazy" width="220" height="165"></div></div>
-        <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v014.jpg"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v014.jpg" alt="Weapon render 14" loading="lazy" width="220" height="165"></div></div>
-        <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v015.jpg"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v015.jpg" alt="Weapon render 15" loading="lazy" width="220" height="165"></div></div>
-        <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v017.jpg"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v017.jpg" alt="Weapon render 17" loading="lazy" width="220" height="165"></div></div>
+        <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v001.jpg" tabindex="0"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v001.jpg" alt="Weapon render 01" loading="lazy" width="220" height="165"></div></div>
+        <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v002.jpg" tabindex="0"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v002.jpg" alt="Weapon render 02" loading="lazy" width="220" height="165"></div></div>
+        <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v003.jpg" tabindex="0"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v003.jpg" alt="Weapon render 03" loading="lazy" width="220" height="165"></div></div>
+        <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v006.jpg" tabindex="0"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v006.jpg" alt="Weapon render 06" loading="lazy" width="220" height="165"></div></div>
+        <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v007.jpg" tabindex="0"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v007.jpg" alt="Weapon render 07" loading="lazy" width="220" height="165"></div></div>
+        <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v008.jpg" tabindex="0"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v008.jpg" alt="Weapon render 08" loading="lazy" width="220" height="165"></div></div>
+        <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v009.jpg" tabindex="0"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v009.jpg" alt="Weapon render 09" loading="lazy" width="220" height="165"></div></div>
+        <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v010.jpg" tabindex="0"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v010.jpg" alt="Weapon render 10" loading="lazy" width="220" height="165"></div></div>
+        <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v011.jpg" tabindex="0"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v011.jpg" alt="Weapon render 11" loading="lazy" width="220" height="165"></div></div>
+        <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v012.jpg" tabindex="0"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v012.jpg" alt="Weapon render 12" loading="lazy" width="220" height="165"></div></div>
+        <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v013.jpg" tabindex="0"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v013.jpg" alt="Weapon render 13" loading="lazy" width="220" height="165"></div></div>
+        <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v014.jpg" tabindex="0"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v014.jpg" alt="Weapon render 14" loading="lazy" width="220" height="165"></div></div>
+        <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v015.jpg" tabindex="0"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v015.jpg" alt="Weapon render 15" loading="lazy" width="220" height="165"></div></div>
+        <div class="d3-render-item lightbox-trigger" data-src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v017.jpg" tabindex="0"><div class="d3-render-item-inner"><img src="img/arma/FD3D_SantiagoJimenez_proyectoFinal_v017.jpg" alt="Weapon render 17" loading="lazy" width="220" height="165"></div></div>
       </div>
       <button class="d3-close" id="d3-weapon-close" style="display:none">✕ Close Weapon renders</button>
     </div>
 
     <!-- KATANA PROJECT -->
     <div class="d3-project" style="margin-top:2rem">
-      <div class="d3-cover" id="d3-katana" data-project="katana" style="background-image:url('img/katana img/katana_fondoNegro_003.png');background-size:cover;background-position:center;">
+      <div class="d3-cover" id="d3-katana" data-project="katana" style="background-image:url('img/katana img/katana_fondoNegro_003.png');background-size:cover;background-position:center;" tabindex="0">
         <canvas class="d3-particle-canvas" data-color="123,92,255"></canvas>
         <div class="d3-cover-placeholder" style="background:rgba(10,10,15,.55)">
           <div class="d3-cover-label">Katana</div>
@@ -610,16 +657,16 @@
         <span class="d3-cover-hint">Click to explore renders →</span>
       </div>
       <div class="d3-renders" id="d3-katana-renders">
-        <div class="d3-render-item lightbox-trigger" data-src="img/katana img/katana_fondoNegro_003.png"><div class="d3-render-item-inner"><img src="img/katana img/katana_fondoNegro_003.png" alt="Katana render 03" loading="lazy" width="220" height="165"></div></div>
-        <div class="d3-render-item lightbox-trigger" data-src="img/katana img/caja_fondoNegro_001.png"><div class="d3-render-item-inner"><img src="img/katana img/caja_fondoNegro_001.png" alt="Caja render 01" loading="lazy" width="220" height="165"></div></div>
-        <div class="d3-render-item lightbox-trigger" data-src="img/katana img/caja_fondoNegro_002.png"><div class="d3-render-item-inner"><img src="img/katana img/caja_fondoNegro_002.png" alt="Caja render 02" loading="lazy" width="220" height="165"></div></div>
-        <div class="d3-render-item lightbox-trigger" data-src="img/katana img/flor.png"><div class="d3-render-item-inner"><img src="img/katana img/flor.png" alt="Flor" loading="lazy" width="220" height="165"></div></div>
-        <div class="d3-render-item lightbox-trigger" data-src="img/katana img/full_01.png"><div class="d3-render-item-inner"><img src="img/katana img/full_01.png" alt="Full 01" loading="lazy" width="220" height="165"></div></div>
-        <div class="d3-render-item lightbox-trigger" data-src="img/katana img/full_02.png"><div class="d3-render-item-inner"><img src="img/katana img/full_02.png" alt="Full 02" loading="lazy" width="220" height="165"></div></div>
-        <div class="d3-render-item lightbox-trigger" data-src="img/katana img/katana_fondoNegro_001.png"><div class="d3-render-item-inner"><img src="img/katana img/katana_fondoNegro_001.png" alt="Katana render 01" loading="lazy" width="220" height="165"></div></div>
-        <div class="d3-render-item lightbox-trigger" data-src="img/katana img/katana_fondoNegro_004.jpg"><div class="d3-render-item-inner"><img src="img/katana img/katana_fondoNegro_004.jpg" alt="Katana render 04" loading="lazy" width="220" height="165"></div></div>
-        <div class="d3-render-item lightbox-trigger" data-src="img/katana img/katana_fondoNegro_005.png"><div class="d3-render-item-inner"><img src="img/katana img/katana_fondoNegro_005.png" alt="Katana render 05" loading="lazy" width="220" height="165"></div></div>
-        <div class="d3-render-item lightbox-trigger" data-src="img/katana img/katana_fondoNegro_006.png"><div class="d3-render-item-inner"><img src="img/katana img/katana_fondoNegro_006.png" alt="Katana render 06" loading="lazy" width="220" height="165"></div></div>
+        <div class="d3-render-item lightbox-trigger" data-src="img/katana img/katana_fondoNegro_003.png" tabindex="0"><div class="d3-render-item-inner"><img src="img/katana img/katana_fondoNegro_003.png" alt="Katana render 03" loading="lazy" width="220" height="165"></div></div>
+        <div class="d3-render-item lightbox-trigger" data-src="img/katana img/caja_fondoNegro_001.png" tabindex="0"><div class="d3-render-item-inner"><img src="img/katana img/caja_fondoNegro_001.png" alt="Caja render 01" loading="lazy" width="220" height="165"></div></div>
+        <div class="d3-render-item lightbox-trigger" data-src="img/katana img/caja_fondoNegro_002.png" tabindex="0"><div class="d3-render-item-inner"><img src="img/katana img/caja_fondoNegro_002.png" alt="Caja render 02" loading="lazy" width="220" height="165"></div></div>
+        <div class="d3-render-item lightbox-trigger" data-src="img/katana img/flor.png" tabindex="0"><div class="d3-render-item-inner"><img src="img/katana img/flor.png" alt="Flor" loading="lazy" width="220" height="165"></div></div>
+        <div class="d3-render-item lightbox-trigger" data-src="img/katana img/full_01.png" tabindex="0"><div class="d3-render-item-inner"><img src="img/katana img/full_01.png" alt="Full 01" loading="lazy" width="220" height="165"></div></div>
+        <div class="d3-render-item lightbox-trigger" data-src="img/katana img/full_02.png" tabindex="0"><div class="d3-render-item-inner"><img src="img/katana img/full_02.png" alt="Full 02" loading="lazy" width="220" height="165"></div></div>
+        <div class="d3-render-item lightbox-trigger" data-src="img/katana img/katana_fondoNegro_001.png" tabindex="0"><div class="d3-render-item-inner"><img src="img/katana img/katana_fondoNegro_001.png" alt="Katana render 01" loading="lazy" width="220" height="165"></div></div>
+        <div class="d3-render-item lightbox-trigger" data-src="img/katana img/katana_fondoNegro_004.jpg" tabindex="0"><div class="d3-render-item-inner"><img src="img/katana img/katana_fondoNegro_004.jpg" alt="Katana render 04" loading="lazy" width="220" height="165"></div></div>
+        <div class="d3-render-item lightbox-trigger" data-src="img/katana img/katana_fondoNegro_005.png" tabindex="0"><div class="d3-render-item-inner"><img src="img/katana img/katana_fondoNegro_005.png" alt="Katana render 05" loading="lazy" width="220" height="165"></div></div>
+        <div class="d3-render-item lightbox-trigger" data-src="img/katana img/katana_fondoNegro_006.png" tabindex="0"><div class="d3-render-item-inner"><img src="img/katana img/katana_fondoNegro_006.png" alt="Katana render 06" loading="lazy" width="220" height="165"></div></div>
       </div>
       <button class="d3-close" id="d3-katana-close" style="display:none">✕ Close Katana renders</button>
     </div>
@@ -684,19 +731,19 @@
     <div class="gallery-title">Nataxhen — Night Witches</div>
     <div class="gallery-sub">// Project · Background &amp; Character Design</div>
     <div class="render-grid">
-      <div class="render-card lightbox-trigger" data-src="img/character designimgimg/LABI_BGdesign_santiagoJimenez_003.jpg" style="cursor:zoom-in">
+      <div class="render-card lightbox-trigger" data-src="img/character designimgimg/LABI_BGdesign_santiagoJimenez_003.jpg" style="cursor:zoom-in" tabindex="0">
         <div class="render-media"><img src="img/character designimgimg/LABI_BGdesign_santiagoJimenez_003.jpg" alt="BG-design hangar" loading="lazy" onerror="this.parentElement.style.background='var(--surface2)'" width="175" height="131"></div>
         <div class="render-info"><div class="gallery-title">BG-design hangar</div><div class="gallery-sub">// Background Design</div></div>
       </div>
-      <div class="render-card lightbox-trigger" data-src="img/character designimgimg/LABI_BGdesign_santiagoJimenez_004.jpg" style="cursor:zoom-in">
+      <div class="render-card lightbox-trigger" data-src="img/character designimgimg/LABI_BGdesign_santiagoJimenez_004.jpg" style="cursor:zoom-in" tabindex="0">
         <div class="render-media"><img src="img/character designimgimg/LABI_BGdesign_santiagoJimenez_004.jpg" alt="Plane-design Polikarpov II" loading="lazy" onerror="this.parentElement.style.background='var(--surface2)'" width="175" height="131"></div>
         <div class="render-info"><div class="gallery-title">Plane-design Polikarpov II</div><div class="gallery-sub">// Prop Design</div></div>
       </div>
-      <div class="render-card lightbox-trigger" data-src="img/character designimgimg/LABI_characterDesign_santiagoJimenez_001.jpg" style="cursor:zoom-in">
+      <div class="render-card lightbox-trigger" data-src="img/character designimgimg/LABI_characterDesign_santiagoJimenez_001.jpg" style="cursor:zoom-in" tabindex="0">
         <div class="render-media"><img src="img/character designimgimg/LABI_characterDesign_santiagoJimenez_001.jpg" alt="Character design 01" loading="lazy" onerror="this.parentElement.style.background='var(--surface2)'" width="175" height="131"></div>
         <div class="render-info"><div class="gallery-title">Character design 01</div><div class="gallery-sub">// Irina and Yevdokiya</div></div>
       </div>
-      <div class="render-card lightbox-trigger" data-src="img/character designimgimg/LABI_characterDesign_santiagoJimenez_002.jpg" style="cursor:zoom-in">
+      <div class="render-card lightbox-trigger" data-src="img/character designimgimg/LABI_characterDesign_santiagoJimenez_002.jpg" style="cursor:zoom-in" tabindex="0">
         <div class="render-media"><img src="img/character designimgimg/LABI_characterDesign_santiagoJimenez_002.jpg" alt="Character design 02" loading="lazy" onerror="this.parentElement.style.background='var(--surface2)'" width="175" height="131"></div>
         <div class="render-info"><div class="gallery-title">Character design 02</div><div class="gallery-sub">// Mayor Markova</div></div>
       </div>
@@ -713,19 +760,19 @@
     <div class="gallery-title">Nataxhen</div>
     <div class="gallery-sub">// Digital illustrations</div>
     <div class="illus-grid">
-      <div class="illus-card lightbox-trigger" data-src="img/ilustraciones/LABI_ShootScenes.jpg">
+      <div class="illus-card lightbox-trigger" data-src="img/ilustraciones/LABI_ShootScenes.jpg" tabindex="0">
         <div class="illus-media"><img src="img/ilustraciones/LABI_ShootScenes.jpg" alt="Nataxhen — Shoot Scenes" loading="lazy" width="240" height="240"></div>
         <div class="illus-info"><div class="gallery-title">Shoot Scenes</div><div class="gallery-sub">// Illustration</div></div>
       </div>
-      <div class="illus-card lightbox-trigger" data-src="img/ilustraciones/LABI_ShootScenes_001.jpg">
+      <div class="illus-card lightbox-trigger" data-src="img/ilustraciones/LABI_ShootScenes_001.jpg" tabindex="0">
         <div class="illus-media"><img src="img/ilustraciones/LABI_ShootScenes_001.jpg" alt="Nataxhen — Shoot Scenes 001" loading="lazy" width="240" height="240"></div>
         <div class="illus-info"><div class="gallery-title">Shoot Scenes 001</div><div class="gallery-sub">// Illustration</div></div>
       </div>
-      <div class="illus-card lightbox-trigger" data-src="img/ilustraciones/LABI_ShootScenes_003.jpg">
+      <div class="illus-card lightbox-trigger" data-src="img/ilustraciones/LABI_ShootScenes_003.jpg" tabindex="0">
         <div class="illus-media"><img src="img/ilustraciones/LABI_ShootScenes_003.jpg" alt="Nataxhen — Shoot Scenes 003" loading="lazy" width="240" height="240"></div>
         <div class="illus-info"><div class="gallery-title">Shoot Scenes 003</div><div class="gallery-sub">// Illustration</div></div>
       </div>
-      <div class="illus-card lightbox-trigger" data-src="img/ilustraciones/LABI_ShootScenes_004.jpg">
+      <div class="illus-card lightbox-trigger" data-src="img/ilustraciones/LABI_ShootScenes_004.jpg" tabindex="0">
         <div class="illus-media"><img src="img/ilustraciones/LABI_ShootScenes_004.jpg" alt="Nataxhen — Shoot Scenes 004" loading="lazy" width="240" height="240"></div>
         <div class="illus-info"><div class="gallery-title">Shoot Scenes 004</div><div class="gallery-sub">// Illustration</div></div>
       </div>
@@ -736,15 +783,15 @@
     <div class="gallery-title">The Crew</div>
     <div class="gallery-sub">// Digital illustrations</div>
     <div class="illus-grid">
-      <div class="illus-card lightbox-trigger" data-src="img/ilustraciones/keyArt_04.png">
+      <div class="illus-card lightbox-trigger" data-src="img/ilustraciones/keyArt_04.png" tabindex="0">
         <div class="illus-media"><img src="img/ilustraciones/keyArt_04.png" alt="The Crew — Key Art 04" loading="lazy" width="240" height="240"></div>
         <div class="illus-info"><div class="gallery-title">Key Art</div><div class="gallery-sub">// Illustration</div></div>
       </div>
-      <div class="illus-card lightbox-trigger" data-src="img/ilustraciones/Barco_01.png">
+      <div class="illus-card lightbox-trigger" data-src="img/ilustraciones/Barco_01.png" tabindex="0">
         <div class="illus-media"><img src="img/ilustraciones/Barco_01.png" alt="The Crew — Barco 01" loading="lazy" width="240" height="240"></div>
         <div class="illus-info"><div class="gallery-title">Barco 01</div><div class="gallery-sub">// Illustration</div></div>
       </div>
-      <div class="illus-card lightbox-trigger" data-src="img/ilustraciones/CUCHILLO.png">
+      <div class="illus-card lightbox-trigger" data-src="img/ilustraciones/CUCHILLO.png" tabindex="0">
         <div class="illus-media"><img src="img/ilustraciones/CUCHILLO.png" alt="The Crew — Cuchillo" loading="lazy" width="240" height="240"></div>
         <div class="illus-info"><div class="gallery-title">Cuchillo</div><div class="gallery-sub">// Illustration</div></div>
       </div>
@@ -755,15 +802,15 @@
     <div class="gallery-title">A Magic Cat Adventure</div>
     <div class="gallery-sub">// Digital illustrations</div>
     <div class="illus-grid">
-      <div class="illus-card lightbox-trigger" data-src="img/ilustraciones/Illustration_concept_01.jpg">
+      <div class="illus-card lightbox-trigger" data-src="img/ilustraciones/Illustration_concept_01.jpg" tabindex="0">
         <div class="illus-media"><img src="img/ilustraciones/Illustration_concept_01.jpg" alt="MCA — Illustration concept 01" loading="lazy" width="240" height="240"></div>
         <div class="illus-info"><div class="gallery-title">Concept 01</div><div class="gallery-sub">// Illustration</div></div>
       </div>
-      <div class="illus-card lightbox-trigger" data-src="img/ilustraciones/Illustration_concept.jpg">
+      <div class="illus-card lightbox-trigger" data-src="img/ilustraciones/Illustration_concept.jpg" tabindex="0">
         <div class="illus-media"><img src="img/ilustraciones/Illustration_concept.jpg" alt="MCA — Illustration concept" loading="lazy" width="240" height="240"></div>
         <div class="illus-info"><div class="gallery-title">Concept</div><div class="gallery-sub">// Illustration</div></div>
       </div>
-      <div class="illus-card lightbox-trigger" data-src="img/ilustraciones/recuperación - Nivel_03_casa - Windows, Mac, Linux - Unity 2022.3.17f1 _DX11_ 29_06_2024 18_28_10.png">
+      <div class="illus-card lightbox-trigger" data-src="img/ilustraciones/recuperación - Nivel_03_casa - Windows, Mac, Linux - Unity 2022.3.17f1 _DX11_ 29_06_2024 18_28_10.png" tabindex="0">
         <div class="illus-media"><img src="img/ilustraciones/recuperación - Nivel_03_casa - Windows, Mac, Linux - Unity 2022.3.17f1 _DX11_ 29_06_2024 18_28_10.png" alt="MCA — Unity screenshot" loading="lazy" width="240" height="240"></div>
         <div class="illus-info"><div class="gallery-title">Unity — Level 03</div><div class="gallery-sub">// Game scene · 2024</div></div>
       </div>
@@ -778,11 +825,11 @@
   <div class="illus-block reveal">
     <div class="gallery-sub" style="margin-bottom:1.5rem">// Traditional &amp; digital studies</div>
     <div class="illus-grid">
-      <div class="illus-card lightbox-trigger" data-src="img/ilustraciones/20241012_210204.jpg">
+      <div class="illus-card lightbox-trigger" data-src="img/ilustraciones/20241012_210204.jpg" tabindex="0">
         <div class="illus-media"><img src="img/ilustraciones/20241012_210204.jpg" alt="Study 01" loading="lazy" width="240" height="240"></div>
         <div class="illus-info"><div class="gallery-title">Study 01</div><div class="gallery-sub">// Oct 2024</div></div>
       </div>
-      <div class="illus-card lightbox-trigger" data-src="img/ilustraciones/20241012_210214.jpg">
+      <div class="illus-card lightbox-trigger" data-src="img/ilustraciones/20241012_210214.jpg" tabindex="0">
         <div class="illus-media"><img src="img/ilustraciones/20241012_210214.jpg" alt="Study 02" loading="lazy" width="240" height="240"></div>
         <div class="illus-info"><div class="gallery-title">Study 02</div><div class="gallery-sub">// Oct 2024</div></div>
       </div>
@@ -885,16 +932,25 @@ document.querySelectorAll('a,button,.skill-card,.d3-cover,.illus-card,.render-ca
   el.addEventListener('mouseleave',()=>{cursor.style.width='12px';cursor.style.height='12px';ring.style.width='40px';ring.style.height='40px';});
 });
 
-/* ── HAMBURGER ── */
-const hamburger=document.getElementById('hamburger'),mobileNav=document.getElementById('nav-mobile');
+/* ── HAMBURGER & MOBILE NAV ── */
+const hamburger=document.getElementById('hamburger'),mobileNav=document.getElementById('nav-mobile'),navMobileClose=document.getElementById('nav-mobile-close');
 hamburger.addEventListener('click',()=>{
   const isOpen=mobileNav.classList.toggle('open');
   hamburger.setAttribute('aria-expanded',isOpen);
+  document.body.style.overflow=isOpen?'hidden':'';
 });
-document.querySelectorAll('.nav-mobile a').forEach(a=>a.addEventListener('click',()=>{
+navMobileClose.addEventListener('click',()=>{
   mobileNav.classList.remove('open');
   hamburger.setAttribute('aria-expanded','false');
+  document.body.style.overflow='';
+});
+document.querySelectorAll('.nav-mobile a, .nav-mobile button').forEach(el=>el.addEventListener('click',()=>{
+  mobileNav.classList.remove('open');
+  hamburger.setAttribute('aria-expanded','false');
+  document.body.style.overflow='';
 }));
+/* FIXED: Prevent scroll when menu is open + close on escape */
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&mobileNav.classList.contains('open')){mobileNav.classList.remove('open');hamburger.setAttribute('aria-expanded','false');document.body.style.overflow='';}});
 
 /* ── LIGHTBOX ── */
 const lightbox=document.getElementById('lightbox'),lbImg=document.getElementById('lb-img'),lbClose=document.getElementById('lb-close');
@@ -904,6 +960,7 @@ lightbox.addEventListener('click',e=>{if(e.target===lightbox)lightbox.classList.
 document.addEventListener('keydown',e=>{if(e.key==='Escape')lightbox.classList.remove('open');});
 document.querySelectorAll('.lightbox-trigger').forEach(el=>{
   el.addEventListener('click',()=>openLightbox(el.dataset.src));
+  el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')openLightbox(el.dataset.src);});
 });
 
 /* ── CANVAS PARTICLES (hero) ── */
@@ -961,6 +1018,7 @@ function toggleD3Project(coverId,rendersId,closeId){
       setTimeout(()=>renders.scrollIntoView({behavior:'smooth',block:'nearest'}),100);
     }
   });
+  cover.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();cover.click();}});
   closeBtn&&closeBtn.addEventListener('click',()=>{renders.classList.remove('open');closeBtn.style.display='none';});
 }
 toggleD3Project('d3-weapon','d3-weapon-renders','d3-weapon-close');
@@ -991,13 +1049,13 @@ reveals.forEach(el=>revealObs.observe(el));
 const seqImages=['img/story img/santiagoJimenez_GAD_ProyectoFinal_01.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_02.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_03.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_04.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_05.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_06.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_07.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_08.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_09.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_10.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_11.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_12.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_13.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_14.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_15.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_16.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_17.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_18.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_19.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_20.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_21.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_22.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_23.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_24.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_25.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_26.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_27.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_28.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_29.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_30.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_31.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_32.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_33.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_34.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_35.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_36.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_37.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_38.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_39.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_40.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_41.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_42.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_43.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_44.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_45.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_46.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_47.jpg'];
 const charSeqImages=['img/character designimgimg/DYAA_EMB3_santiagoJimenez_v001.jpg','img/character designimgimg/DYAA_EMB3_santiagoJimenez_v002.jpg','img/character designimgimg/DYAA_EMB3_santiagoJimenez_v003.jpg','img/character designimgimg/DYAA_EMB3_santiagoJimenez_v004.jpg','img/character designimgimg/DYAA_EMB3_santiagoJimenez_v005.jpg','img/character designimgimg/DYAA_EMB3_santiagoJimenez_v006.jpg','img/character designimgimg/DYAA_EMB3_santiagoJimenez_v007.jpg','img/character designimgimg/DYAA_EMB3_santiagoJimenez_v008.jpg','img/character designimgimg/DYAA_EMB3_santiagoJimenez_v009.jpg'];
 
-function setupSequenceViewer(btnPrevId, btnNextId, counterId, imgId, images) {
+function setupSequenceViewer(btnPrevId,btnNextId,counterId,imgId,images){
   const btnPrev=document.getElementById(btnPrevId);
   const btnNext=document.getElementById(btnNextId);
   const counter=document.getElementById(counterId);
   const img=document.getElementById(imgId);
   let current=0;
-  function updateView() {
+  function updateView(){
     img.src=images[current];
     counter.textContent=`${String(current+1).padStart(2,'0')} / ${images.length}`;
     btnPrev.disabled=current===0;
