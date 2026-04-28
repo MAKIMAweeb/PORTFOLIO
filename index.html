@@ -44,6 +44,7 @@
   .nav-dropdown:hover > a::after,
   .nav-dropdown.open > a::after { transform:rotate(180deg); }
 
+  /* invisible bridge so cursor can travel from trigger to menu */
   .nav-dropdown::after {
     content:''; position:absolute; top:100%; left:-20px; right:-20px;
     height:18px; background:transparent;
@@ -61,6 +62,7 @@
     transform-origin:top center;
     transition:opacity .35s cubic-bezier(.16,1,.3,1),
                transform .35s cubic-bezier(.34,1.2,.64,1);
+    /* delay hide so cursor has time to reach items */
     transition-delay:0s;
     box-shadow: 0 20px 60px rgba(0,0,0,.6), 0 0 0 1px rgba(200,255,0,.05);
   }
@@ -69,10 +71,12 @@
     opacity:1; pointer-events:all;
     transform:translateX(-50%) translateY(0) scaleY(1);
   }
+  /* delay disappear by 200ms so cursor has time */
   .nav-dropdown:not(:hover) .dropdown-menu {
     transition-delay:.18s;
   }
 
+  /* decorative top accent line animation */
   .dropdown-menu::before {
     content:''; position:absolute; top:-2px; left:0; right:0; height:2px;
     background:linear-gradient(90deg, transparent, var(--accent), transparent);
@@ -80,6 +84,7 @@
   }
   @keyframes scanLine { 0%{background-position:-200px 0} 100%{background-position:200px 0} }
 
+  /* staggered item reveal */
   .dropdown-menu a, .dropdown-menu .dm-sep {
     opacity:0;
     transform:translateX(-6px);
@@ -239,7 +244,7 @@
   .video-card .gallery-title { font-size:1.1rem; margin-top:1rem; margin-bottom:.25rem; }
   .video-card .gallery-sub { margin-bottom:0; font-size:.7rem; }
 
-  /* LAYOUT PREVIS */
+  /* LAYOUT PREVIS — featured large + 3 smaller */
   .layout-main { margin-bottom:1.5rem; }
   .layout-small-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.2rem; }
   .layout-card { }
@@ -254,7 +259,7 @@
   .script-img-wrap { margin-top:1rem; border:1px solid var(--border); border-radius:2px; overflow:hidden; cursor:zoom-in; }
   .script-img-wrap img { width:100%; display:block; }
 
-  /* render / design grid */
+  /* render / design grid — small cards with hover zoom */
   .render-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(175px,1fr)); gap:.85rem; }
   .render-card {
     background:var(--surface); border:1px solid var(--border); border-radius:2px;
@@ -273,7 +278,7 @@
   .render-info .gallery-title { font-size:.85rem; margin-bottom:.15rem; }
   .render-info .gallery-sub { margin-bottom:0; font-size:.62rem; }
 
-  /* 3D DESIGN */
+  /* 3D DESIGN — interactive project cards */
   .d3-project { margin-bottom:3rem; }
   .d3-cover {
     position:relative; width:100%; aspect-ratio:16/9;
@@ -285,8 +290,10 @@
   .d3-cover-sub { font-family:'DM Mono',monospace; font-size:.75rem; color:var(--muted); letter-spacing:.15em; text-transform:uppercase; }
   .d3-cover-hint { position:absolute; bottom:1rem; right:1rem; font-family:'DM Mono',monospace; font-size:.68rem; color:var(--accent); letter-spacing:.1em; text-transform:uppercase; opacity:0; transition:opacity .3s; }
   .d3-cover:hover .d3-cover-hint { opacity:1; }
+  /* particles canvas inside cover */
   .d3-cover canvas { position:absolute; inset:0; pointer-events:none; }
 
+  /* renders explosion overlay */
   .d3-renders {
     display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:1rem;
     max-height:0; overflow:hidden; opacity:0;
@@ -352,6 +359,9 @@
   /* FOOTER */
   footer { border-top:1px solid var(--border); padding:2rem 3rem; display:flex; justify-content:space-between; align-items:center; font-family:'DM Mono',monospace; font-size:.7rem; color:var(--muted); }
 
+  /* Anchor offset for fixed nav */
+  [id] { scroll-margin-top: 90px; }
+
   /* SCROLL REVEAL */
   .reveal { opacity:0; transform:translateY(40px); transition:opacity .8s ease, transform .8s cubic-bezier(.16,1,.3,1); }
   .reveal.visible { opacity:1; transform:translateY(0); }
@@ -361,11 +371,114 @@
     nav { padding:1rem 1.5rem; }
     nav ul { display:none; }
     .nav-hamburger { display:flex; }
-    .nav-mobile { display:none; flex-direction:column; position:fixed; top:60px; left:0; right:0; background:rgba(10,10,15,.98); border-bottom:1px solid var(--border); padding:1.5rem; gap:1.2rem; z-index:490; backdrop-filter:blur(20px); }
+
+    /* Mobile nav container */
+    .nav-mobile {
+      display:none; flex-direction:column;
+      position:fixed; top:60px; left:0; right:0; bottom:0;
+      background:rgba(10,10,15,.99);
+      padding:1rem 1.5rem 2rem;
+      gap:0; z-index:490;
+      backdrop-filter:blur(20px);
+      overflow-y:auto;
+      -webkit-overflow-scrolling:touch;
+    }
     .nav-mobile.open { display:flex; }
-    .nav-mobile a { font-family:'DM Mono',monospace; font-size:.85rem; color:var(--muted); text-decoration:none; text-transform:uppercase; letter-spacing:.1em; padding:.5rem 0; border-bottom:1px solid var(--border); }
-    .nav-mobile a:last-child { border-bottom:none; }
-    .nav-mobile a:hover { color:var(--accent); }
+
+    /* Mobile accordion */
+    .mob-link {
+      font-family:'DM Mono',monospace; font-size:.85rem;
+      color:var(--muted); text-decoration:none;
+      text-transform:uppercase; letter-spacing:.1em;
+      padding:.85rem 0; border-bottom:1px solid var(--border);
+      display:block; transition:color .2s;
+    }
+    .mob-link:hover { color:var(--accent); }
+    .mob-accordion { border-bottom:1px solid var(--border); }
+    .mob-acc-trigger {
+      width:100%; background:none; border:none; cursor:pointer;
+      font-family:'DM Mono',monospace; font-size:.85rem;
+      color:var(--muted); text-transform:uppercase; letter-spacing:.1em;
+      padding:.85rem 0; display:flex; justify-content:space-between; align-items:center;
+      transition:color .2s;
+    }
+    .mob-acc-trigger:hover,
+    .mob-acc-trigger[aria-expanded="true"] { color:var(--accent); }
+    .mob-acc-arrow { font-size:.6rem; transition:transform .3s cubic-bezier(.34,1.56,.64,1); }
+    .mob-acc-trigger[aria-expanded="true"] .mob-acc-arrow { transform:rotate(180deg); }
+    .mob-acc-panel {
+      display:flex; flex-direction:column;
+      max-height:0; overflow:hidden;
+      transition:max-height .4s cubic-bezier(.16,1,.3,1);
+    }
+    .mob-acc-panel.open { max-height:500px; }
+    .mob-sub-link {
+      font-family:'DM Mono',monospace; font-size:.78rem;
+      color:var(--muted); text-decoration:none;
+      letter-spacing:.08em; text-transform:uppercase;
+      padding:.65rem 0 .65rem 1rem;
+      border-left:2px solid transparent;
+      transition:color .2s, border-color .2s;
+    }
+    .mob-sub-link:hover { color:var(--accent); border-left-color:var(--accent); }
+
+    /* Top-level links */
+    .mob-link {
+      font-family:'DM Mono',monospace; font-size:.85rem;
+      color:var(--muted); text-decoration:none;
+      text-transform:uppercase; letter-spacing:.1em;
+      padding:.85rem 0;
+      border-bottom:1px solid var(--border);
+      transition:color .2s;
+    }
+    .mob-link:hover { color:var(--accent); }
+
+    /* Accordion wrapper */
+    .mob-accordion {
+      border-bottom:1px solid var(--border);
+    }
+
+    /* Accordion trigger button */
+    .mob-acc-trigger {
+      width:100%; background:none; border:none; cursor:pointer;
+      font-family:'DM Mono',monospace; font-size:.85rem;
+      color:var(--muted); text-transform:uppercase; letter-spacing:.1em;
+      padding:.85rem 0;
+      display:flex; justify-content:space-between; align-items:center;
+      transition:color .2s;
+    }
+    .mob-acc-trigger:hover,
+    .mob-acc-trigger[aria-expanded="true"] { color:var(--accent); }
+
+    .mob-acc-arrow {
+      font-size:.6rem;
+      transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+    }
+    .mob-acc-trigger[aria-expanded="true"] .mob-acc-arrow {
+      transform:rotate(180deg);
+    }
+
+    /* Accordion panel */
+    .mob-acc-panel {
+      display:flex; flex-direction:column; gap:0;
+      max-height:0; overflow:hidden;
+      transition:max-height .4s cubic-bezier(.16,1,.3,1);
+    }
+    .mob-acc-panel.open { max-height:500px; }
+
+    /* Sub-links inside panel */
+    .mob-sub-link {
+      font-family:'DM Mono',monospace; font-size:.78rem;
+      color:var(--muted); text-decoration:none;
+      letter-spacing:.08em; text-transform:uppercase;
+      padding:.65rem 0 .65rem 1rem;
+      border-left:2px solid transparent;
+      transition:color .2s, border-color .2s;
+    }
+    .mob-sub-link:hover {
+      color:var(--accent);
+      border-left-color:var(--accent);
+    }
     section { padding:4rem 1.5rem; }
     #hero { padding:7rem 1.5rem 3rem; }
     .about-grid { grid-template-columns:1fr; gap:3rem; }
@@ -404,23 +517,24 @@
   <a href="#hero" class="nav-logo">SJ.</a>
   <ul>
     <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Work</a></li>
 
+    <!-- GALLERY DROPDOWN -->
     <li class="nav-dropdown">
       <a href="#gallery">Gallery</a>
       <div class="dropdown-menu">
-        <a href="#reel">Animation Reel</a>
         <a href="#storyboard">Storyboard</a>
-        <a href="#design3d">3D Design</a>
+        <a href="#reel">Animation</a>
         <a href="#layout">Layout &amp; Previs</a>
+        <a href="#design3d">3D Design</a>
         <a href="#characters">Character Design</a>
         <a href="#illustrations">Illustrations</a>
         <a href="#sketches">Sketches &amp; Studies</a>
       </div>
     </li>
 
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#skills">Skills</a></li>
-
+    <!-- PROJECTS DROPDOWN -->
     <li class="nav-dropdown">
       <a href="#projects">Projects</a>
       <div class="dropdown-menu">
@@ -445,6 +559,7 @@
     <li><a href="#contacto">Contact</a></li>
   </ul>
 
+  <!-- HAMBURGER -->
   <button class="nav-hamburger" id="hamburger" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
@@ -452,24 +567,44 @@
 
 <!-- MOBILE NAV -->
 <nav class="nav-mobile" id="nav-mobile">
-  <a href="#about">About</a>
-  <a href="#gallery">Gallery</a>
-  <a href="#reel">Animation Reel</a>
-  <a href="#storyboard">Storyboard</a>
-  <a href="#design3d">3D Design</a>
-  <a href="#layout">Layout &amp; Previs</a>
-  <a href="#characters">Character Design</a>
-  <a href="#illustrations">Illustrations</a>
-  <a href="#sketches">Sketches &amp; Studies</a>
-  <a href="#nataxhen">Nataxhen — Night Witches</a>
-  <a href="#characters">Zane</a>
-  <a href="#illustrations">MCA</a>
-  <a href="#experience">Experience</a>
-  <a href="#skills">Skills</a>
-  <a href="img/CV/CV_SantiagoJimenez_EN (1).pdf" target="_blank" rel="noopener" style="color:var(--accent)!important">CV — English ↗</a>
-  <a href="img/CV/CV_SantiagoJimenez_ES.pdf" target="_blank" rel="noopener" style="color:var(--accent)!important">CV — Español ↗</a>
-  <a href="img/CV/CV_SantiagoJimenez_FR.pdf" target="_blank" rel="noopener" style="color:var(--accent)!important">CV — Français ↗</a>
-  <a href="#contacto">Contact</a>
+
+  <a href="#about" class="mob-link">About</a>
+
+  <div class="mob-accordion">
+    <button class="mob-acc-trigger" aria-expanded="false">Gallery <span class="mob-acc-arrow">▾</span></button>
+    <div class="mob-acc-panel">
+      <a href="#reel" class="mob-sub-link">Animation Reel</a>
+      <a href="#storyboard" class="mob-sub-link">Storyboard</a>
+      <a href="#design3d" class="mob-sub-link">3D Design</a>
+      <a href="#layout" class="mob-sub-link">Layout &amp; Previs</a>
+      <a href="#characters" class="mob-sub-link">Character Design</a>
+      <a href="#illustrations" class="mob-sub-link">Illustrations</a>
+      <a href="#sketches" class="mob-sub-link">Sketches &amp; Studies</a>
+    </div>
+  </div>
+
+  <div class="mob-accordion">
+    <button class="mob-acc-trigger" aria-expanded="false">Projects <span class="mob-acc-arrow">▾</span></button>
+    <div class="mob-acc-panel">
+      <a href="#nataxhen" class="mob-sub-link">Nataxhen — Night Witches</a>
+      <a href="#characters" class="mob-sub-link">Zane</a>
+      <a href="#mca" class="mob-sub-link">MCA</a>
+    </div>
+  </div>
+
+  <a href="#skills" class="mob-link">Skills</a>
+
+  <div class="mob-accordion">
+    <button class="mob-acc-trigger nav-cv" aria-expanded="false">CV ↗ <span class="mob-acc-arrow">▾</span></button>
+    <div class="mob-acc-panel">
+      <a href="img/CV/CV_SantiagoJimenez_EN (1).pdf" target="_blank" rel="noopener" class="mob-sub-link" style="color:var(--accent)">🇬🇧 English</a>
+      <a href="img/CV/CV_SantiagoJimenez_ES.pdf" target="_blank" rel="noopener" class="mob-sub-link" style="color:var(--accent)">🇪🇸 Español</a>
+      <a href="img/CV/CV_SantiagoJimenez_FR.pdf" target="_blank" rel="noopener" class="mob-sub-link" style="color:var(--accent)">🇫🇷 Français</a>
+    </div>
+  </div>
+
+  <a href="#contacto" class="mob-link">Contact</a>
+
 </nav>
 
 <!-- HERO -->
@@ -503,7 +638,7 @@
   </div>
 </div>
 
-<!-- ①  ABOUT -->
+<!-- ABOUT -->
 <section id="about">
   <div class="section-label">01 — About</div>
   <div class="about-grid">
@@ -525,19 +660,65 @@
   </div>
 </section>
 
-<!-- ②  GALLERY -->
-<section id="gallery">
-  <div class="section-label">02 — Gallery</div>
-  <h2>Selected work.</h2>
+<!-- REEL STRIP -->
+<div class="reel-strip">
+  <div class="reel-inner">
+    <span class="reel-tag">Maya</span><span class="reel-tag">Toon Boom Harmony</span><span class="reel-tag">Unreal Engine 5</span><span class="reel-tag">Blender</span><span class="reel-tag">Layout Design</span><span class="reel-tag">Character Animation</span><span class="reel-tag">3D Modeling</span><span class="reel-tag">Rigging</span><span class="reel-tag">Scene Composition</span><span class="reel-tag">Motion Graphics</span>
+    <span class="reel-tag">Maya</span><span class="reel-tag">Toon Boom Harmony</span><span class="reel-tag">Unreal Engine 5</span><span class="reel-tag">Blender</span><span class="reel-tag">Layout Design</span><span class="reel-tag">Character Animation</span><span class="reel-tag">3D Modeling</span><span class="reel-tag">Rigging</span><span class="reel-tag">Scene Composition</span><span class="reel-tag">Motion Graphics</span>
+  </div>
+</div>
 
-  <!-- ANIMATION REEL -->
-  <div class="gallery-block reveal" id="reel">
-    <div class="gallery-title">Animation Reel — 2D &amp; 3D</div>
-    <div class="gallery-sub">// Showreel</div>
-    <div class="video-frame">
-      <iframe src="https://www.youtube.com/embed/jQGkn48HSqs" title="Animation Reel" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">02 — Skills &amp; Tools</div>
+  <h2>The toolkit.</h2>
+  <div class="skills-grid">
+    <div class="skill-card featured reveal" data-bar="90"><div class="skill-icon">⚡</div><div class="skill-name">Autodesk Maya</div><div class="skill-desc">Primary 3D tool for modeling, rigging, and full character animation pipelines.</div><div class="skill-level"><div class="skill-bar"></div></div></div>
+    <div class="skill-card featured reveal" data-bar="85"><div class="skill-icon">✦</div><div class="skill-name">Toon Boom Harmony</div><div class="skill-desc">Industry-standard 2D animation software for frame-by-frame and cut-out animation.</div><div class="skill-level"><div class="skill-bar"></div></div></div>
+    <div class="skill-card reveal" data-bar="70"><div class="skill-icon">◈</div><div class="skill-name">Unreal Engine 5</div><div class="skill-desc">Real-time 3D creation — used professionally as layout artist in short film production.</div><div class="skill-level"><div class="skill-bar"></div></div></div>
+    <div class="skill-card reveal" data-bar="60"><div class="skill-icon">◎</div><div class="skill-name">Blender</div><div class="skill-desc">Open-source 3D suite for modeling and rendering. Solid foundational knowledge.</div><div class="skill-level"><div class="skill-bar"></div></div></div>
+    <div class="skill-card reveal" data-bar="80"><div class="skill-icon">▲</div><div class="skill-name">3D Animation</div><div class="skill-desc">Keyframing, timing, weight, and character performance for compelling 3D sequences.</div><div class="skill-level"><div class="skill-bar"></div></div></div>
+    <div class="skill-card reveal" data-bar="80"><div class="skill-icon">◉</div><div class="skill-name">2D Animation</div><div class="skill-desc">Frame-by-frame animation, scene layout, and storytelling through motion.</div><div class="skill-level"><div class="skill-bar"></div></div></div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label">03 — Experience</div>
+  <h2>Work &amp; projects.</h2>
+  <div class="exp-item reveal">
+    <div class="exp-year">2024 — Present</div>
+    <div>
+      <div class="exp-role">Layout Artist</div>
+      <div class="exp-company">// Short Film (In Production)</div>
+      <div class="exp-desc">Contributing as layout artist on an upcoming short film currently in production. Working within a professional pipeline using <strong>Unreal Engine 5</strong> to establish scene composition, camera placements, and spatial storytelling.</div>
+      <span class="exp-badge">Unreal Engine 5</span><span class="exp-badge">In Production</span>
     </div>
   </div>
+  <div class="exp-item reveal">
+    <div class="exp-year">Ongoing</div>
+    <div>
+      <div class="exp-role">3D Animator</div>
+      <div class="exp-company">// Independent Projects</div>
+      <div class="exp-desc">Developing personal animation projects using Autodesk Maya — focusing on character performance, timing, and bringing expressive movement to life.</div>
+      <span class="exp-badge">Maya</span><span class="exp-badge">Blender</span>
+    </div>
+  </div>
+  <div class="exp-item reveal">
+    <div class="exp-year">Ongoing</div>
+    <div>
+      <div class="exp-role">2D Animator</div>
+      <div class="exp-company">// Toon Boom · Frame-by-frame</div>
+      <div class="exp-desc">Creating 2D animation sequences using Toon Boom Harmony — from character rigs to full scene animation. Exploring the intersection of traditional animation principles with digital production tools.</div>
+      <span class="exp-badge">Toon Boom Harmony</span><span class="exp-badge">2D Animation</span>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery">
+  <div class="section-label">04 — Gallery</div>
+  <h2>Selected work.</h2>
 
   <!-- STORYBOARD -->
   <div class="gallery-block reveal" id="storyboard">
@@ -556,6 +737,63 @@
       <button class="seq-btn" id="seq-prev" type="button">← Prev</button>
       <span class="seq-counter" id="seq-counter">01 / 47</span>
       <button class="seq-btn" id="seq-next" type="button">Next →</button>
+    </div>
+  </div>
+
+  <!-- ANIMATION REEL -->
+  <div class="gallery-block reveal" id="reel">
+    <div class="gallery-title">Animation Reel — 2D &amp; 3D</div>
+    <div class="gallery-sub">// Showreel</div>
+    <div class="video-frame">
+      <iframe src="https://www.youtube.com/embed/rmeQ-nYvJ-Y" title="Animation Reel" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <!-- LAYOUT PREVIS -->
+  <div class="gallery-block reveal" id="layout">
+    <div class="gallery-title">Layout &amp; Previs</div>
+    <div class="gallery-sub">// Previs reel + selected shots</div>
+
+    <!-- MAIN REEL big panel -->
+    <div class="layout-main">
+      <div class="video-frame">
+        <iframe src="https://www.youtube.com/embed/HfxHiKYZJaE" title="Layout & Previs Reel — Santiago Jiménez" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <div class="gallery-title" style="font-size:1.1rem;margin-top:.75rem;">Layout &amp; Previs Reel</div>
+      <div class="gallery-sub" style="margin-bottom:0;">// Full reel</div>
+    </div>
+
+    <!-- 3 smaller panels -->
+    <div class="layout-small-grid">
+      <!-- The Long Walk -->
+      <div class="layout-card">
+        <div class="video-frame">
+          <iframe src="https://www.youtube.com/embed/hnfffpR5iaU" title="The Long Walk - Adaptation" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="gallery-title">The Long Walk — Adaptation</div>
+        <div class="gallery-sub">// Layout · Script adaptation</div>
+        <button class="script-toggle" id="script-toggle">
+          <span id="script-arrow">↗</span> View adapted script (PDF)
+        </button>
+      </div>
+
+      <!-- Action Sequence -->
+      <div class="layout-card">
+        <div class="video-frame">
+          <iframe src="https://www.youtube.com/embed/9r1xd_PoEyo" title="Action Sequence" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="gallery-title">Action Sequence</div>
+        <div class="gallery-sub">// Layout · Previs</div>
+      </div>
+
+      <!-- GOTV -->
+      <div class="layout-card">
+        <div class="video-frame">
+          <iframe src="https://www.youtube.com/embed/Mh7H108vSls" title="Guardians of the Voxel - GOTV" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div class="gallery-title">Guardians of the Voxel — GOTV</div>
+        <div class="gallery-sub">// Layout · Previs</div>
+      </div>
     </div>
   </div>
 
@@ -619,45 +857,6 @@
     </div>
   </div>
 
-  <!-- LAYOUT PREVIS -->
-  <div class="gallery-block reveal" id="layout">
-    <div class="gallery-title">Layout &amp; Previs</div>
-    <div class="gallery-sub">// Previs reel + selected shots</div>
-    <div class="layout-main">
-      <div class="video-frame">
-        <iframe src="https://www.youtube.com/embed/HfxHiKYZJaE" title="Layout & Previs Reel — Santiago Jiménez" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      </div>
-      <div class="gallery-title" style="font-size:1.1rem;margin-top:.75rem;">Layout &amp; Previs Reel</div>
-      <div class="gallery-sub" style="margin-bottom:0;">// Full reel</div>
-    </div>
-    <div class="layout-small-grid">
-      <div class="layout-card">
-        <div class="video-frame">
-          <iframe src="https://www.youtube.com/embed/hnfffpR5iaU" title="The Long Walk - Adaptation" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-        <div class="gallery-title">The Long Walk — Adaptation</div>
-        <div class="gallery-sub">// Layout · Script adaptation</div>
-        <button class="script-toggle" id="script-toggle">
-          <span id="script-arrow">↗</span> View adapted script (PDF)
-        </button>
-      </div>
-      <div class="layout-card">
-        <div class="video-frame">
-          <iframe src="https://www.youtube.com/embed/9r1xd_PoEyo" title="Action Sequence" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-        <div class="gallery-title">Action Sequence</div>
-        <div class="gallery-sub">// Layout · Previs</div>
-      </div>
-      <div class="layout-card">
-        <div class="video-frame">
-          <iframe src="https://www.youtube.com/embed/Mh7H108vSls" title="Guardians of the Voxel - GOTV" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-        <div class="gallery-title">Guardians of the Voxel — GOTV</div>
-        <div class="gallery-sub">// Layout · Previs</div>
-      </div>
-    </div>
-  </div>
-
   <!-- CHARACTER DESIGN -->
   <div class="gallery-block reveal" id="characters">
     <div class="gallery-title">Character Design</div>
@@ -673,7 +872,7 @@
     </div>
   </div>
 
-  <!-- NATAXHEN -->
+  <!-- NATAXHEN — NIGHT WITCHES (project) -->
   <div class="gallery-block reveal" id="nataxhen">
     <div class="gallery-title">Nataxhen — Night Witches</div>
     <div class="gallery-sub">// Project · Background &amp; Character Design</div>
@@ -698,11 +897,12 @@
   </div>
 </section>
 
-<!-- ③  ILLUSTRATIONS -->
+<!-- ILLUSTRATIONS -->
 <section id="illustrations">
-  <div class="section-label">03 — Illustrations</div>
+  <div class="section-label">05 — Illustrations</div>
   <h2>Illustrations.</h2>
 
+  <!-- NATAXHEN illustrations -->
   <div class="illus-block reveal">
     <div class="gallery-title">Nataxhen</div>
     <div class="gallery-sub">// Digital illustrations</div>
@@ -726,6 +926,7 @@
     </div>
   </div>
 
+  <!-- THE CREW -->
   <div class="illus-block reveal">
     <div class="gallery-title">The Crew</div>
     <div class="gallery-sub">// Digital illustrations</div>
@@ -745,6 +946,7 @@
     </div>
   </div>
 
+  <!-- A MAGIC CAT ADVENTURE (MCA) -->
   <div class="illus-block reveal" id="mca">
     <div class="gallery-title">A Magic Cat Adventure</div>
     <div class="gallery-sub">// Digital illustrations</div>
@@ -765,9 +967,9 @@
   </div>
 </section>
 
-<!-- ④  SKETCHES & STUDIES -->
+<!-- SKETCHES & STUDIES -->
 <section id="sketches">
-  <div class="section-label">04 — Sketches &amp; Studies</div>
+  <div class="section-label">06 — Sketches &amp; Studies</div>
   <h2>Sketches, live studies<br>&amp; anatomy drawing.</h2>
   <div class="illus-block reveal">
     <div class="gallery-sub" style="margin-bottom:1.5rem">// Traditional &amp; digital studies</div>
@@ -784,54 +986,14 @@
   </div>
 </section>
 
-<!-- ⑤  EXPERIENCE -->
-<section id="experience">
-  <div class="section-label">05 — Experience</div>
-  <h2>Where I've<br>worked.</h2>
-  <div class="exp-item reveal">
-    <div class="exp-year">2024 — Present</div>
-    <div>
-      <div class="exp-role">Layout Artist</div>
-      <div class="exp-company">Nataxhen — Night Witches (Short Film)</div>
-      <div class="exp-desc">Contributed as layout artist on a short film currently in production, using Unreal Engine 5 to build and compose shots for the final pipeline.</div>
-      <span class="exp-badge">Unreal Engine 5</span>
-      <span class="exp-badge">Layout</span>
-      <span class="exp-badge">Previs</span>
-    </div>
-  </div>
-  <!-- Add more .exp-item blocks here as needed -->
-</section>
-
-<!-- ⑥  SKILLS & TOOLKIT -->
-<section id="skills">
-  <div class="section-label">06 — Skills &amp; Tools</div>
-  <h2>The toolkit.</h2>
-  <div class="skills-grid">
-    <div class="skill-card featured reveal" data-bar="90"><div class="skill-icon">⚡</div><div class="skill-name">Autodesk Maya</div><div class="skill-desc">Primary 3D tool for modeling, rigging, and full character animation pipelines.</div><div class="skill-level"><div class="skill-bar"></div></div></div>
-    <div class="skill-card featured reveal" data-bar="85"><div class="skill-icon">✦</div><div class="skill-name">Toon Boom Harmony</div><div class="skill-desc">Industry-standard 2D animation software for frame-by-frame and cut-out animation.</div><div class="skill-level"><div class="skill-bar"></div></div></div>
-    <div class="skill-card reveal" data-bar="70"><div class="skill-icon">◈</div><div class="skill-name">Unreal Engine 5</div><div class="skill-desc">Real-time 3D creation — used professionally as layout artist in short film production.</div><div class="skill-level"><div class="skill-bar"></div></div></div>
-    <div class="skill-card reveal" data-bar="60"><div class="skill-icon">◎</div><div class="skill-name">Blender</div><div class="skill-desc">Open-source 3D suite for modeling and rendering. Solid foundational knowledge.</div><div class="skill-level"><div class="skill-bar"></div></div></div>
-    <div class="skill-card reveal" data-bar="80"><div class="skill-icon">▲</div><div class="skill-name">3D Animation</div><div class="skill-desc">Keyframing, timing, weight, and character performance for compelling 3D sequences.</div><div class="skill-level"><div class="skill-bar"></div></div></div>
-    <div class="skill-card reveal" data-bar="80"><div class="skill-icon">◉</div><div class="skill-name">2D Animation</div><div class="skill-desc">Frame-by-frame animation, scene layout, and storytelling through motion.</div><div class="skill-level"><div class="skill-bar"></div></div></div>
-  </div>
-</section>
-
-<!-- REEL STRIP (between skills and contact) -->
-<div class="reel-strip">
-  <div class="reel-inner">
-    <span class="reel-tag">Maya</span><span class="reel-tag">Toon Boom Harmony</span><span class="reel-tag">Unreal Engine 5</span><span class="reel-tag">Blender</span><span class="reel-tag">Layout Design</span><span class="reel-tag">Character Animation</span><span class="reel-tag">3D Modeling</span><span class="reel-tag">Rigging</span><span class="reel-tag">Scene Composition</span><span class="reel-tag">Motion Graphics</span>
-    <span class="reel-tag">Maya</span><span class="reel-tag">Toon Boom Harmony</span><span class="reel-tag">Unreal Engine 5</span><span class="reel-tag">Blender</span><span class="reel-tag">Layout Design</span><span class="reel-tag">Character Animation</span><span class="reel-tag">3D Modeling</span><span class="reel-tag">Rigging</span><span class="reel-tag">Scene Composition</span><span class="reel-tag">Motion Graphics</span>
-  </div>
-</div>
-
-<!-- ⑦  CONTACT -->
+<!-- CONTACT -->
 <section class="contact" id="contacto">
   <div class="contact-grid">
     <div class="contact-info reveal">
       <p class="section-label">07 — Contact</p>
       <h2 class="section-title">Let's work<br>together.</h2>
       <p>Open to freelance projects, collaborations and studio opportunities. Let's create something unforgettable.</p>
-      <a href="https://mail.google.com/mail/?view=cm&fs=1&to=sjimenezmgt@gmail.com&su=Project%20Inquiry" class="contact-email" target="_blank" rel="noopener">sjimenezmgt@gmail.com</a>
+      <a href="mailto:santiagojmgt@gmail.com" class="contact-email">santiagojmgt@gmail.com</a>
       <div class="socials">
         <a href="https://www.instagram.com/santi_jm_anim?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" class="social-link" target="_blank" rel="noopener">
           <span class="social-icon">IG</span> Instagram
@@ -841,31 +1003,15 @@
         </a>
       </div>
     </div>
-    <div data-fs-success style="display:none" class="form-status ok">&#10003; Message sent! I'll get back to you soon.</div>
-    <div data-fs-error style="display:none" class="form-status err"></div>
-    <form id="contacto-form" class="contact-form reveal">
-      <div class="form-group">
-        <label class="form-label" for="nombre">Name</label>
-        <input id="nombre" type="text" name="nombre" class="form-input" placeholder="Your name" required data-fs-field>
-        <span data-fs-error="nombre" style="color:#ff4444;font-size:.8rem;margin-top:.25rem;display:block"></span>
-      </div>
-      <div class="form-group">
-        <label class="form-label" for="email">Email</label>
-        <input id="email" type="email" name="email" class="form-input" placeholder="your@email.com" required data-fs-field>
-        <span data-fs-error="email" style="color:#ff4444;font-size:.8rem;margin-top:.25rem;display:block"></span>
-      </div>
-      <div class="form-group">
-        <label class="form-label" for="mensaje">Message</label>
-        <textarea id="mensaje" name="mensaje" class="form-input" placeholder="Tell me about your project..." required data-fs-field></textarea>
-        <span data-fs-error="mensaje" style="color:#ff4444;font-size:.8rem;margin-top:.25rem;display:block"></span>
-      </div>
-      <button type="submit" class="btn-send" data-fs-submit-btn>Send message</button>
+    <form class="contact-form reveal" name="contacto" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="contacto">
+      <p style="display:none"><label>No fill: <input name="bot-field"></label></p>
+      <div class="form-group"><label class="form-label" for="nombre">Name</label><input id="nombre" type="text" name="nombre" class="form-input" placeholder="Your name" required></div>
+      <div class="form-group"><label class="form-label" for="email">Email</label><input id="email" type="email" name="email" class="form-input" placeholder="your@email.com" required></div>
+      <div class="form-group"><label class="form-label" for="mensaje">Message</label><textarea id="mensaje" name="mensaje" class="form-input" placeholder="Tell me about your project..." required></textarea></div>
+      <button type="submit" class="btn-send">Send message</button>
+      <div class="form-status" id="form-status"></div>
     </form>
-    <script>
-      window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
-      formspree('initForm', { formElement: '#contacto-form', formId: 'mojyzrbn' });
-    </script>
-    <script src="https://unpkg.com/@formspree/ajax@1" defer></script>
   </div>
 </section>
 
@@ -899,6 +1045,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')lightbox.classList.r
 document.querySelectorAll('.lightbox-trigger').forEach(el=>{
   el.addEventListener('click',()=>openLightbox(el.dataset.src));
 });
+// clickable images inside non-trigger containers
 document.querySelectorAll('.sb-featured img,.render-card img,.illus-card img').forEach(img=>{
   img.addEventListener('click',()=>openLightbox(img.src));
   img.style.cursor='zoom-in';
@@ -951,6 +1098,7 @@ function toggleD3Project(coverId,rendersId,closeId){
   if(!cover||!renders)return;
   cover.addEventListener('click',()=>{
     const isOpen=renders.classList.contains('open');
+    // close all others
     document.querySelectorAll('.d3-renders').forEach(r=>r.classList.remove('open'));
     document.querySelectorAll('.d3-close').forEach(b=>b.style.display='none');
     if(!isOpen){
@@ -964,7 +1112,7 @@ function toggleD3Project(coverId,rendersId,closeId){
 toggleD3Project('d3-weapon','d3-weapon-renders','d3-weapon-close');
 toggleD3Project('d3-katana','d3-katana-renders','d3-katana-close');
 
-/* ── SCRIPT PANEL ── */
+/* ── SCRIPT PANEL — open PDF ── */
 const scriptToggle=document.getElementById('script-toggle');
 scriptToggle&&scriptToggle.addEventListener('click',()=>{
   window.open('img/The Long Walk - 2025 - Screenplay.pdf','_blank');
@@ -999,9 +1147,20 @@ const seqImages=[
   'img/story img/santiagoJimenez_GAD_ProyectoFinal_46.jpg','img/story img/santiagoJimenez_GAD_ProyectoFinal_47.jpg'
 ];
 
-const imgCache={};
-function preload(src){if(!src||imgCache[src])return;const i=new Image();i.src=src;imgCache[src]=i;}
-function preloadAround(arr,idx){preload(arr[idx]);if(arr[idx+1])preload(arr[idx+1]);if(arr[idx+2])preload(arr[idx+2]);if(arr[idx-1])preload(arr[idx-1]);}
+// Image cache — preload neighbours so flipping is instant
+const imgCache = {};
+function preload(src) {
+  if (!src || imgCache[src]) return;
+  const i = new Image();
+  i.src = src;
+  imgCache[src] = i;
+}
+function preloadAround(arr, idx) {
+  preload(arr[idx]);
+  if (arr[idx+1]) preload(arr[idx+1]);
+  if (arr[idx+2]) preload(arr[idx+2]);
+  if (arr[idx-1]) preload(arr[idx-1]);
+}
 
 let seqIdx=0;
 const seqImg=document.getElementById('seq-img'),seqCounter=document.getElementById('seq-counter'),seqPrev=document.getElementById('seq-prev'),seqNext=document.getElementById('seq-next');
@@ -1013,7 +1172,7 @@ function renderSeq(){
   const pad=n=>String(n).padStart(2,'0');
   seqCounter.textContent=`${pad(seqIdx+1)} / ${pad(seqImages.length)}`;
   seqPrev.disabled=seqIdx===0;seqNext.disabled=seqIdx===seqImages.length-1;
-  preloadAround(seqImages,seqIdx);
+  preloadAround(seqImages, seqIdx);
 }
 seqPrev&&seqPrev.addEventListener('click',()=>{if(seqIdx>0){seqIdx--;renderSeq();}});
 seqNext&&seqNext.addEventListener('click',()=>{if(seqIdx<seqImages.length-1){seqIdx++;renderSeq();}});
@@ -1044,7 +1203,7 @@ function renderChar(){
   const pad=n=>String(n).padStart(2,'0');
   charCounter.textContent=`${pad(charIdx+1)} / ${pad(charSeqImages.length)}`;
   charPrev.disabled=charIdx===0;charNext.disabled=charIdx===charSeqImages.length-1;
-  preloadAround(charSeqImages,charIdx);
+  preloadAround(charSeqImages, charIdx);
 }
 charPrev&&charPrev.addEventListener('click',()=>{if(charIdx>0){charIdx--;renderChar();}});
 charNext&&charNext.addEventListener('click',()=>{if(charIdx<charSeqImages.length-1){charIdx++;renderChar();}});
@@ -1057,55 +1216,48 @@ document.addEventListener('keydown',e=>{
 });
 renderChar();
 
+// Lazy load all gallery images that don't already have loading attr
 document.querySelectorAll('.illus-media img, .render-media img, .d3-render-item-inner img').forEach(img=>{
-  if(!img.getAttribute('loading'))img.setAttribute('loading','lazy');
+  if(!img.getAttribute('loading')) img.setAttribute('loading','lazy');
   img.setAttribute('decoding','async');
 });
 
-/* ── GRAVITY ANIMATION ON FORM SUCCESS ── */
-function triggerGravityAnimation(){
-  const targets=[...document.querySelectorAll('nav, #hero, .ticker, section, .reel-strip, footer, .contact-grid > *')].filter(el=>{const r=el.getBoundingClientRect();return r.width>0&&r.height>0;});
-  targets.forEach(el=>{const r=el.getBoundingClientRect();el.style.position='fixed';el.style.top=(r.top)+'px';el.style.left=r.left+'px';el.style.width=r.width+'px';el.style.margin='0';el.style.zIndex='10';el.style.transition='none';});
-  const gravity=0.6;
-  const bodies=targets.map(el=>{const r=el.getBoundingClientRect();return{el,x:r.left,y:r.top,vx:(Math.random()-.5)*6,vy:Math.random()*-4,rot:0,rotV:(Math.random()-.5)*4,floor:window.innerHeight+300};});
-  let frame;
-  const startTime=performance.now();
-  const fallDuration=2200;
-  function step(now){
-    const elapsed=now-startTime;
-    bodies.forEach(b=>{b.vy+=gravity;b.x+=b.vx;b.y+=b.vy;b.rot+=b.rotV;b.el.style.left=b.x+'px';b.el.style.top=b.y+'px';b.el.style.transform=`rotate(${b.rot}deg)`;});
-    if(elapsed<fallDuration){frame=requestAnimationFrame(step);}else{showSuccessOverlay();}
-  }
-  frame=requestAnimationFrame(step);
-  window._restorePage=function(){cancelAnimationFrame(frame);targets.forEach(el=>{el.style.position='';el.style.top='';el.style.left='';el.style.width='';el.style.margin='';el.style.transform='';el.style.transition='';el.style.zIndex='';});document.body.style.overflow='';window.scrollTo(0,0);};
-}
-function showSuccessOverlay(){const overlay=document.getElementById('success-overlay');if(!overlay)return;overlay.classList.add('visible');document.body.style.overflow='hidden';}
-(function createOverlay(){
-  const overlay=document.createElement('div');
-  overlay.id='success-overlay';
-  overlay.innerHTML=`<div class="success-box"><div class="success-icon">✦</div><h2 class="success-title">Message sent.</h2><p class="success-sub">Thanks for reaching out — I'll get back to you soon.</p><button class="success-btn" onclick="dismissOverlay()">Back to portfolio</button></div>`;
-  document.body.appendChild(overlay);
-  const style=document.createElement('style');
-  style.textContent=`#success-overlay{position:fixed;inset:0;z-index:9990;background:rgba(10,10,15,0.97);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.6s ease;backdrop-filter:blur(12px);}#success-overlay.visible{opacity:1;pointer-events:all;}.success-box{text-align:center;max-width:480px;padding:3rem 2rem;animation:successPop 0.7s cubic-bezier(.34,1.56,.64,1) both;}@keyframes successPop{from{transform:translateY(40px) scale(0.9);opacity:0;}to{transform:translateY(0) scale(1);opacity:1;}}.success-icon{font-size:3rem;color:#c8ff00;margin-bottom:1.5rem;animation:spin 3s linear infinite;}@keyframes spin{to{transform:rotate(360deg);}}.success-title{font-family:'Syne',sans-serif;font-size:clamp(2.5rem,6vw,4rem);font-weight:800;color:#f0f0ee;margin-bottom:1rem;letter-spacing:-0.03em;}.success-sub{font-size:1rem;line-height:1.7;color:#888890;margin-bottom:2.5rem;}.success-btn{background:#c8ff00;color:#0a0a0f;font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;letter-spacing:.05em;border:none;padding:1rem 2.5rem;cursor:pointer;border-radius:2px;transition:transform .2s,box-shadow .2s;}.success-btn:hover{transform:translateY(-2px);box-shadow:0 20px 60px rgba(200,255,0,.3);}`;
-  document.head.appendChild(style);
-})();
-window.dismissOverlay=function(){const overlay=document.getElementById('success-overlay');overlay.classList.remove('visible');if(window._restorePage)setTimeout(window._restorePage,600);};
-
-document.addEventListener('DOMContentLoaded',()=>{
-  const form=document.getElementById('contacto-form');
-  if(!form)return;
-  form.addEventListener('submit',async(e)=>{
-    e.preventDefault();
-    const btn=form.querySelector('[data-fs-submit-btn]');
-    if(btn){btn.disabled=true;btn.textContent='Sending...';}
-    const data=new FormData(form);
-    try{
-      const res=await fetch('https://formspree.io/f/mojyzrbn',{method:'POST',headers:{'Accept':'application/json'},body:data});
-      if(res.ok){form.reset();triggerGravityAnimation();}
-      else{const json=await res.json();const errEl=document.querySelector('[data-fs-error]');if(errEl){errEl.style.display='block';errEl.textContent=json?.errors?.[0]?.message||'Something went wrong. Email me directly.';}if(btn){btn.disabled=false;btn.textContent='Send message';}}
-    }catch{const errEl=document.querySelector('[data-fs-error]');if(errEl){errEl.style.display='block';errEl.textContent='Network error. Email me directly.';}if(btn){btn.disabled=false;btn.textContent='Send message';}}
-  },{once:false});
+/* ── CONTACT FORM ── */
+const contactForm=document.querySelector('form[name="contacto"]'),formStatus=document.getElementById('form-status');
+contactForm&&contactForm.addEventListener('submit',async e=>{
+  e.preventDefault();formStatus.className='form-status';formStatus.textContent='Sending...';
+  try{
+    const res=await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(contactForm)).toString()});
+    if(res.ok){formStatus.classList.add('ok');formStatus.textContent='Thanks! I\'ll get back to you soon.';contactForm.reset();}
+    else throw new Error();
+  }catch{formStatus.classList.add('err');formStatus.textContent='Something went wrong. Email me directly.';}
 });
+
+/* ── MOBILE ACCORDION ── */
+document.querySelectorAll('.mob-acc-trigger').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const panel = btn.nextElementSibling;
+    const isOpen = btn.getAttribute('aria-expanded') === 'true';
+    document.querySelectorAll('.mob-acc-trigger').forEach(b => {
+      b.setAttribute('aria-expanded', 'false');
+      if(b.nextElementSibling) b.nextElementSibling.classList.remove('open');
+    });
+    if (!isOpen) {
+      btn.setAttribute('aria-expanded', 'true');
+      panel.classList.add('open');
+    }
+  });
+});
+document.querySelectorAll('.nav-mobile .mob-link, .nav-mobile .mob-sub-link').forEach(a => {
+  a.addEventListener('click', () => {
+    document.getElementById('nav-mobile').classList.remove('open');
+    document.querySelectorAll('.mob-acc-trigger').forEach(b => {
+      b.setAttribute('aria-expanded','false');
+      if(b.nextElementSibling) b.nextElementSibling.classList.remove('open');
+    });
+  });
+});
+
 </script>
 </body>
 </html>
